@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group = 'reengineering.ddd'
+version = '0.1.0'
+
+sourceCompatibility = '18'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}
+
