@@ -1,7 +1,22 @@
 plugins {
     id 'reengineering.ddd'
+    id 'java-library'
+    id 'org.springframework.boot' version '2.7.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
 dependencies {
     implementation project(':domain')
+    implementation 'javax.inject:javax.inject:1'
+    implementation 'jakarta.ws.rs:jakarta.ws.rs-api:2.1.6'
+    implementation 'org.springframework.hateoas:spring-hateoas:1.5.0'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-hateoas'
+    testImplementation 'org.springframework.boot:spring-boot-starter-jersey'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.rest-assured:rest-assured'
+}
+
+repositories {
+    mavenCentral()
 }
