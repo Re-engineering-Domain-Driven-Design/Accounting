@@ -45,10 +45,10 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
     }
 
     @Test
-    public void should_return_all_source_evidences() {
+    public void should_return_all_source_evidences_with_only_links() {
         SourceEvidence evidence = mock(SourceEvidence.class);
         when(evidence.identity()).thenReturn("EV-001");
-        when(evidence.description()).thenReturn(new EvidenceDescription("ORD-001"));
+        when(evidence.description()).thenThrow(new NullPointerException());
 
         when(sourceEvidences.findAll()).thenReturn(new EntityList<>(evidence));
 
@@ -58,7 +58,6 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
                 .body("_links.self.href", is("/api/customers/" + customer.identity() + "/source-evidences"))
                 .body("_embedded.evidences.size()", is(1))
                 .body("_embedded.evidences[0].id", is("EV-001"))
-                .body("_embedded.evidences[0].orderId", is("ORD-001"))
                 .body("_embedded.evidences[0]._links.self.href", is("/api/customers/" + customer.identity() + "/source-evidences/EV-001"));
     }
 

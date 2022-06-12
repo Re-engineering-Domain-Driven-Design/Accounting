@@ -27,22 +27,19 @@ public class SourceEvidenceModel extends RepresentationModel<SourceEvidenceModel
     @JsonProperty
     private List<TransactionModel> transactions;
 
-    private SourceEvidenceModel(Customer customer, SourceEvidence evidence, UriInfo info) {
-        this(customer, evidence, evidence.transactions().findAll().stream().map(tx -> new TransactionModel(customer, tx, info)).collect(Collectors.toList()), info);
-    }
-
-    private SourceEvidenceModel(Customer customer, SourceEvidence<?> evidence, List<TransactionModel> transactions, UriInfo info) {
+    private SourceEvidenceModel(Customer customer, SourceEvidence<?> evidence, SourceEvidenceDescription description, List<TransactionModel> transactions, UriInfo info) {
         this.id = evidence.identity();
-        this.description = evidence.description();
+        this.description = description;
         this.transactions = transactions;
         add(Link.of(ApiTemplates.sourceEvidence(info).build(customer.identity(), evidence.identity()).getPath(), "self"));
+
     }
 
-    public static SourceEvidenceModel NoTransactions(Customer customer, SourceEvidence evidence, UriInfo info) {
-        return new SourceEvidenceModel(customer, evidence, null, info);
+    public static SourceEvidenceModel simple(Customer customer, SourceEvidence<?> evidence, UriInfo info) {
+        return new SourceEvidenceModel(customer, evidence, null, null, info);
     }
 
-    public static SourceEvidenceModel of(Customer customer, SourceEvidence evidence, UriInfo info) {
-        return new SourceEvidenceModel(customer, evidence, info);
+    public static SourceEvidenceModel of(Customer customer, SourceEvidence<?> evidence, UriInfo info) {
+        return new SourceEvidenceModel(customer, evidence, evidence.description(), evidence.transactions().findAll().stream().map(tx -> new TransactionModel(customer, tx, info)).collect(Collectors.toList()), info);
     }
 }
