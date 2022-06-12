@@ -3,7 +3,6 @@ package reengineering.ddd.accounting.api;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import reengineering.ddd.accounting.description.CustomerDescription;
@@ -11,11 +10,7 @@ import reengineering.ddd.accounting.description.SourceEvidenceDescription;
 import reengineering.ddd.accounting.model.Customer;
 import reengineering.ddd.accounting.model.Customers;
 import reengineering.ddd.accounting.model.SourceEvidence;
-import reengineering.ddd.archtype.Entity;
-import reengineering.ddd.archtype.EntityCollection;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
@@ -48,38 +43,38 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
         given().accept(MediaTypes.HAL_JSON.toString())
                 .when().get("/customers/" + customer.identity() + "/source-evidences")
                 .then().statusCode(200)
+                .body("_links.self.href", is("/api/customers/" + customer.identity() + "/source-evidences"))
                 .body("_embedded.evidences.size()", is(1))
                 .body("_embedded.evidences[0].id", is("EV-001"))
                 .body("_embedded.evidences[0].orderId", is("ORD-001"));
     }
-}
 
-record EvidenceDescription(String orderId) implements SourceEvidenceDescription {
-}
+    @Test
+    public void should_return_404_if_no_source_evidence_matched_by_id() {
+        when(sourceEvidences.findByIdentity("EV-001")).thenReturn(Optional.empty());
 
-class EntityList<E extends Entity<?, ?>> implements EntityCollection<E> {
-    private List<E> list;
-
-    public EntityList(List<E> list) {
-        this.list = list;
+        given().accept(MediaTypes.HAL_JSON.toString())
+                .when().get("/customers/" + customer.identity() + "/source-evidences/EV-001")
+                .then().statusCode(404);
     }
 
-    public EntityList(E... entities) {
-        this(List.of(entities));
+    @Test
+    public void should_return_source_evidence_matched_by_id() {
+        SourceEvidence evidence = mock(SourceEvidence.class);
+        when(evidence.identity()).thenReturn("EV-001");
+        when(evidence.description()).thenReturn(new EvidenceDescription("ORD-001"));
+
+        when(sourceEvidences.findByIdentity("EV-001")).thenReturn(Optional.of(evidence));
+        
+        given().accept(MediaTypes.HAL_JSON.toString())
+                .when().get("/customers/" + customer.identity() + "/source-evidences/EV-001")
+                .then().statusCode(200)
+                .body("id", is("EV-001"))
+                .body("orderId", is("ORD-001"));
     }
 
-    @Override
-    public int size() {
-        return list.size();
-    }
-
-    @Override
-    public EntityCollection<E> subCollection(int from, int to) {
-        return new EntityList<>(list.subList(from, to));
-    }
-
-    @Override
-    public Iterator<E> iterator() {
-        return list.iterator();
+    record EvidenceDescription(String orderId) implements SourceEvidenceDescription {
     }
 }
+
+

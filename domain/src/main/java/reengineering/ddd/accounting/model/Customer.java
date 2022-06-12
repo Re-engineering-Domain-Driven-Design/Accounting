@@ -4,6 +4,8 @@ import reengineering.ddd.accounting.description.CustomerDescription;
 import reengineering.ddd.archtype.Entity;
 import reengineering.ddd.archtype.EntityCollection;
 
+import java.util.Optional;
+
 public class Customer implements Entity<String, CustomerDescription> {
     private String identity;
     private CustomerDescription description;
@@ -31,5 +33,7 @@ public class Customer implements Entity<String, CustomerDescription> {
     public interface SourceEvidences {
 
         EntityCollection<SourceEvidence> findAll();
+
+        Optional<SourceEvidence> findByIdentity(String identifier);
     }
 }

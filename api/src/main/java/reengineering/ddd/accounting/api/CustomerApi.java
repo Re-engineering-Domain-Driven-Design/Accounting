@@ -19,8 +19,7 @@ public class CustomerApi {
 
     @GET
     public CustomerModel get(@Context UriInfo info) {
-        URI self = info.getBaseUriBuilder().path(CustomersApi.class)
-                .path(CustomersApi.class, "findById").build(customer.identity());
+        URI self = info.getRequestUri();
 
         return new CustomerModel(customer, Link.of(self.getPath(), "self"));
     }
