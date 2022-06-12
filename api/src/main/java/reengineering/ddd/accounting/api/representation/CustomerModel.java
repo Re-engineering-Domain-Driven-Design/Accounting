@@ -15,7 +15,7 @@ public class CustomerModel extends RepresentationModel<CustomerModel> {
 
     public CustomerModel(Customer customer, Link... links) {
         super(Arrays.asList(links));
-        this.id = customer.id();
+        this.id = customer.identity();
         this.description = customer.description();
     }
 }

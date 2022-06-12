@@ -30,13 +30,13 @@ public class CustomersApiTest extends ApiTest {
     public void should_return_customer_if_customer_exists() {
         Customer customer = new Customer("john.smith",
                 new CustomerDescription("John Smith", "john.smith@email.com"));
-        when(customers.findById(eq(customer.id()))).thenReturn(Optional.of(customer));
+        when(customers.findById(eq(customer.identity()))).thenReturn(Optional.of(customer));
 
         given().accept(MediaTypes.HAL_JSON.toString())
-                .when().get("/customers/" + customer.id())
+                .when().get("/customers/" + customer.identity())
                 .then().statusCode(200)
                 .body("name", is(customer.description().name()))
                 .body("email", is(customer.description().email()))
-                .body("_links.self.href", is("/api/customers/" + customer.id()));
+                .body("_links.self.href", is("/api/customers/" + customer.identity()));
     }
 }
