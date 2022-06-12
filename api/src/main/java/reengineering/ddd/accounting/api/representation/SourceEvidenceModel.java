@@ -31,7 +31,7 @@ public class SourceEvidenceModel extends RepresentationModel<SourceEvidenceModel
         this(customer, evidence, evidence.transactions().findAll().stream().map(tx -> new TransactionModel(customer, tx, info)).collect(Collectors.toList()), info);
     }
 
-    private SourceEvidenceModel(Customer customer, SourceEvidence evidence, List<TransactionModel> transactions, UriInfo info) {
+    private SourceEvidenceModel(Customer customer, SourceEvidence<?> evidence, List<TransactionModel> transactions, UriInfo info) {
         this.id = evidence.identity();
         this.description = evidence.description();
         this.transactions = transactions;

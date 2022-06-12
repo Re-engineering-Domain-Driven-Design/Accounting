@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reengineering.ddd.accounting.mybatis.mapper.SourceEvidenceMapper">
+    <resultMap id="ref" type="reengineering.ddd.accounting.description.basic.Ref">
+        <constructor>
+            <arg column="id" javaType="Object"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="amount" type="reengineering.ddd.accounting.description.basic.Amount">
+        <constructor>
+            <arg column="amount" javaType="decimal"/>
+            <arg column="currency" javaType="reengineering.ddd.accounting.description.basic.Currency"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="salesSettlementDescription"
+               type="reengineering.ddd.accounting.description.SalesSettlementDescription">
+        <association property="order" resultMap="ref" columnPrefix="order_"/>
+        <association property="account" resultMap="ref" columnPrefix="account_"/>
+        <association property="total" resultMap="amount" columnPrefix="total_"/>
+        <collection property="details" resultMap="salesSettlementDescriptionDetails" columnPrefix="detail_"/>
+    </resultMap>
+
+    <resultMap id="salesSettlementDescriptionDetails"
+               type="reengineering.ddd.accounting.description.SalesSettlementDescription$Detail">
+        <association property="amount" resultMap="amount"/>
+    </resultMap>
+
+    <resultMap id="salesSettlement" type="reengineering.ddd.accounting.model.SalesSettlement">
+        <id property="identity" column="id" jdbcType="BIGINT" javaType="String"/>
+        <association property="description" column="id" select="loadSalesSettlement"/>
+    </resultMap>
+
+    <resultMap id="sourceEvidence" type="reengineering.ddd.accounting.model.SourceEvidence">
+        <discriminator javaType="String" column="type">
+            <case value="sales-settlement" resultMap="salesSettlement"/>
+        </discriminator>
+    </resultMap>
+
+    <select id="findByCustomerId" resultMap="sourceEvidence">
+        select id, customer_id, type
+        from source_evidences e
+        where customer_id = #{customer_id}
+    </select>
+
+    <select id="loadSalesSettlement" resultMap="salesSettlementDescription">
+        select s.id             as id,
+               s.order_id       as order_id,
+               s.account_id     as account_id,
+               s.total_amount   as total_amount,
+               s.total_currency as total_currecny,
+               d.amount         as detail_amount,
+               d.currency       as detail_currency,
+        from sales_settlements s
+                 left outer join sales_settlement_details d on d.sales_settlement_id = s.id
+        where s.id = #{id}
+    </select>
+
+</mapper>

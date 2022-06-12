@@ -8,4 +8,13 @@ import org.apache.ibatis.annotations.Param;
 public interface TestDataMapper {
     @Insert("INSERT INTO customers(id, name, email) VALUES(#{id}, #{name}, #{email})")
     void insertCustomer(@Param("id") String id, @Param("name") String name, @Param("email") String email);
+
+    @Insert("INSERT INTO source_evidences(id, customer_id, type) VALUES(#{id}, #{customer_id}, #{type})")
+    void insertSourceEvidence(@Param("id") String id, @Param("customer_id") String customerId, @Param("type") String type);
+
+    @Insert("INSERT INTO sales_settlements(id, order_id, account_id, total_amount, total_currency) VALUES(#{id}, #{order_id}, #{account_id}, #{total_amount}, #{total_currency})")
+    void insertSalesSettlement(@Param("id") String id, @Param("order_id") String orderId, @Param("account_id") String accountId, @Param("total_amount") double amount, @Param("total_currency") String currency);
+
+    @Insert("INSERT INTO sales_settlement_details(id, sales_settlement_id, amount, currency) VALUES(#{id}, #{sales_settlement_id}, #{amount}, #{currency})")
+    void insertSalesSettlementDetail(@Param("id") String id, @Param("sales_settlement_id") String salesSettlementId, @Param("amount") double amount, @Param("currency") String currency);
 }

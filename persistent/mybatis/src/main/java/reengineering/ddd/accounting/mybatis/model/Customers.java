@@ -2,7 +2,7 @@ package reengineering.ddd.accounting.mybatis.model;
 
 import org.springframework.stereotype.Component;
 import reengineering.ddd.accounting.model.Customer;
-import reengineering.ddd.accounting.mybatis.mapper.CustomersMapper;
+import reengineering.ddd.accounting.mybatis.mapper.CustomerMapper;
 
 import javax.inject.Inject;
 import java.util.Optional;
@@ -10,10 +10,10 @@ import java.util.Optional;
 
 @Component
 public class Customers implements reengineering.ddd.accounting.model.Customers {
-    private CustomersMapper mapper;
+    private CustomerMapper mapper;
 
     @Inject
-    public Customers(CustomersMapper mapper) {
+    public Customers(CustomerMapper mapper) {
         this.mapper = mapper;
     }
 

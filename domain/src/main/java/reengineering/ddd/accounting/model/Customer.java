@@ -45,11 +45,11 @@ public class Customer implements Entity<String, CustomerDescription> {
 
     public interface SourceEvidences {
 
-        EntityCollection<SourceEvidence> findAll();
+        EntityCollection<SourceEvidence<?>> findAll();
 
-        Optional<SourceEvidence> findByIdentity(String identifier);
+        Optional<SourceEvidence<?>> findByIdentity(String identifier);
 
-        SourceEvidence add(SourceEvidenceDescription description);
+        SourceEvidence<?> add(SourceEvidenceDescription description);
     }
 
     public interface Accounts {

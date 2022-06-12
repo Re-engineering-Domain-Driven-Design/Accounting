@@ -3,11 +3,14 @@ package reengineering.ddd.accounting.model;
 import reengineering.ddd.accounting.description.SalesSettlementDescription;
 import reengineering.ddd.accounting.description.SourceEvidenceDescription;
 
-public class SalesSettlement implements SourceEvidence {
+public class SalesSettlement implements SourceEvidence<SalesSettlementDescription> {
     private String identity;
     private SalesSettlementDescription description;
 
     private Transactions transactions;
+
+    private SalesSettlement() {
+    }
 
     public SalesSettlement(String identity, SalesSettlementDescription description, Transactions transactions) {
         this.identity = identity;
@@ -21,7 +24,7 @@ public class SalesSettlement implements SourceEvidence {
     }
 
     @Override
-    public SourceEvidenceDescription description() {
+    public SalesSettlementDescription description() {
         return description;
     }
 
