@@ -20,19 +20,20 @@ public class SourceEvidenceMapperTest {
     @Inject
     private TestDataMapper testData;
 
+    String id = "1";
+    String detailId = "1";
+    String customer = "1";
+    String order = "ORD-001";
+    String account = "CASH-001";
+
     @Test
     public void should_read_sales_settlement_as_source_evidence() {
-        String id = "1";
-        String detailId = "1";
-        String customer = "1";
-        String order = "ORD-001";
-        String account = "CASH-001";
 
         testData.insertSourceEvidence(id, customer, "sales-settlement");
         testData.insertSalesSettlement(id, order, account, 100.00, "CNY");
         testData.insertSalesSettlementDetail(detailId, id, 100.00, "CNY");
 
-        List<SourceEvidence> evidences = mapper.findByCustomerId(customer);
+        List<SourceEvidence<?>> evidences = mapper.findByCustomerId(customer);
         assertEquals(1, evidences.size());
 
         SalesSettlement salesSettlement = (SalesSettlement) evidences.get(0);

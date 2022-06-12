@@ -3,16 +3,23 @@ package reengineering.ddd.accounting.mybatis.model;
 import reengineering.ddd.accounting.description.SourceEvidenceDescription;
 import reengineering.ddd.accounting.model.Customer;
 import reengineering.ddd.accounting.model.SourceEvidence;
+import reengineering.ddd.accounting.mybatis.mapper.SourceEvidenceMapper;
 import reengineering.ddd.archtype.EntityCollection;
+import reengineering.ddd.mybatis.EntityList;
 
+import javax.inject.Inject;
+import java.util.List;
 import java.util.Optional;
 
 public class CustomerSourceEvidences implements Customer.SourceEvidences {
     private String customerId;
 
+    @Inject
+    private SourceEvidenceMapper mapper;
+
     @Override
     public EntityCollection<SourceEvidence<?>> findAll() {
-        return null;
+        return new EntityList<>(mapper.findByCustomerId(customerId));
     }
 
     @Override

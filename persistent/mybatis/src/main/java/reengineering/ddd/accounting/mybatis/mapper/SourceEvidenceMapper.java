@@ -7,5 +7,5 @@ import java.util.List;
 
 @Mapper
 public interface SourceEvidenceMapper {
-    List<SourceEvidence> findByCustomerId(String customerId);
+    List<SourceEvidence<?>> findByCustomerId(String customerId);
 }

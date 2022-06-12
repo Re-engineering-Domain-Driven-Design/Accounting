@@ -11,6 +11,11 @@
     <resultMap id="customer" type="reengineering.ddd.accounting.model.Customer">
         <id property="identity" column="id" jdbcType="BIGINT" javaType="String"/>
         <association property="description" resultMap="customerDescription"/>
+        <association property="sourceEvidences" resultMap="sourceEvidences"/>
+    </resultMap>
+
+    <resultMap id="sourceEvidences" type="reengineering.ddd.accounting.mybatis.model.CustomerSourceEvidences">
+        <result column="id" property="customerId" javaType="String"/>
     </resultMap>
 
     <select id="findById" resultMap="customer">

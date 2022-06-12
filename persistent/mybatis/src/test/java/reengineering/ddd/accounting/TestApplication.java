@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan("reengineering.ddd.accounting.mybatis")
+@ComponentScan({"reengineering.ddd.accounting.mybatis", "reengineering.ddd.mybatis.support"})
 public class TestApplication {
 
     public static void main(String[] args) {
