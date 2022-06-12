@@ -1,6 +1,7 @@
 package reengineering.ddd.accounting.model;
 
 import reengineering.ddd.accounting.description.CustomerDescription;
+import reengineering.ddd.accounting.description.SourceEvidenceDescription;
 import reengineering.ddd.archtype.Entity;
 import reengineering.ddd.archtype.EntityCollection;
 
@@ -35,5 +36,7 @@ public class Customer implements Entity<String, CustomerDescription> {
         EntityCollection<SourceEvidence> findAll();
 
         Optional<SourceEvidence> findByIdentity(String identifier);
+
+        SourceEvidence add(SourceEvidenceDescription description);
     }
 }

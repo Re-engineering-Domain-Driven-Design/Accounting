@@ -20,5 +20,9 @@ public class ApiTest {
         RestAssured.port = port;
         RestAssured.basePath = contextPath;
     }
+
+    protected String uri(String path) {
+        return String.format("http://localhost:%d%s", port, path);
+    }
 }
 
