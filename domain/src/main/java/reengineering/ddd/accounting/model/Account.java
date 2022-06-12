@@ -5,8 +5,6 @@ import reengineering.ddd.accounting.description.TransactionDescription;
 import reengineering.ddd.archtype.Entity;
 import reengineering.ddd.archtype.EntityCollection;
 
-import java.util.Optional;
-
 public class Account implements Entity<String, AccountDescription> {
     private String identity;
     private AccountDescription description;
@@ -35,8 +33,6 @@ public class Account implements Entity<String, AccountDescription> {
 
     public interface Transactions {
         EntityCollection<Transaction> findAll();
-
-        Optional<Transaction> findByIdentity(String identifier);
 
         Transaction add(TransactionDescription description);
     }

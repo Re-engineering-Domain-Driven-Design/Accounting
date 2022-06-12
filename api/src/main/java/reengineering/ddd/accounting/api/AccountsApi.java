@@ -26,7 +26,8 @@ public class AccountsApi {
     @Path("{account-id}/transactions")
     public CollectionModel<TransactionModel> findAll(@PathParam("account-id") String id, @Context UriInfo info) {
         Account account = customer.accounts().findByIdentity(id).orElseThrow(() -> new WebApplicationException(Response.Status.NOT_FOUND));
-        return CollectionModel.of(account.transactions().findAll().stream().map(TransactionModel::new).collect(Collectors.toList()),
+        return CollectionModel.of(account.transactions().findAll().stream().map(tx -> new TransactionModel(customer, tx, info))
+                        .collect(Collectors.toList()),
                 Link.of(ApiTemplates.accountTransactions(info).build(customer.identity(), account.identity()).getPath(), "self"));
     }
 }
