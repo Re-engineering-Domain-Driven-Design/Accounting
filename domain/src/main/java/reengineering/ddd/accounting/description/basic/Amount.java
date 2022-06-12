@@ -1,4 +1,4 @@
-package reengineering.ddd.accounting.description;
+package reengineering.ddd.accounting.description.basic;
 
 import java.math.BigDecimal;
 

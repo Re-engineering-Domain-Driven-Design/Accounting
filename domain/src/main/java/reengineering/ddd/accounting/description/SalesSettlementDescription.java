@@ -1,6 +1,8 @@
 package reengineering.ddd.accounting.description;
 
-import java.util.ArrayList;
+import reengineering.ddd.accounting.description.basic.Amount;
+import reengineering.ddd.accounting.description.basic.Ref;
+
 import java.util.List;
 
 public class SalesSettlementDescription implements SourceEvidenceDescription {

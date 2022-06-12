@@ -3,9 +3,9 @@ package reengineering.ddd.accounting.api.representation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import reengineering.ddd.accounting.description.Amount;
-import reengineering.ddd.accounting.description.Currency;
-import reengineering.ddd.accounting.description.Ref;
+import reengineering.ddd.accounting.description.basic.Amount;
+import reengineering.ddd.accounting.description.basic.Currency;
+import reengineering.ddd.accounting.description.basic.Ref;
 import reengineering.ddd.accounting.description.SalesSettlementDescription;
 
 import java.math.BigDecimal;
