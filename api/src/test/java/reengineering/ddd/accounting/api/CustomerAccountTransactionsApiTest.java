@@ -3,7 +3,6 @@ package reengineering.ddd.accounting.api;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import reengineering.ddd.accounting.description.AccountDescription;
@@ -15,7 +14,6 @@ import reengineering.ddd.accounting.model.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
 
 import static io.restassured.RestAssured.given;

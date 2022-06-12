@@ -1,2 +1,2 @@
 rootProject.name = 'accounting'
-include 'domain', 'api'
+include 'domain', 'api', 'persistent:mybatis'

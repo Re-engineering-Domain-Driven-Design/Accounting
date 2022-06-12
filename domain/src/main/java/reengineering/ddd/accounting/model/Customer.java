@@ -24,6 +24,9 @@ public class Customer implements Entity<String, CustomerDescription> {
         this.accounts = accounts;
     }
 
+    private Customer() {
+    }
+
     public String identity() {
         return identity;
     }
