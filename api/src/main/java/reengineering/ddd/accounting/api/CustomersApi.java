@@ -1,6 +1,6 @@
 package reengineering.ddd.accounting.api;
 
-import reengineering.ddd.accounting.domain.Customers;
+import reengineering.ddd.accounting.model.Customers;
 
 import javax.inject.Inject;
 import javax.ws.rs.Path;

@@ -1,4 +1,4 @@
-package reengineering.ddd.accounting.domain;
+package reengineering.ddd.accounting.model;
 
 import java.util.Optional;
 
