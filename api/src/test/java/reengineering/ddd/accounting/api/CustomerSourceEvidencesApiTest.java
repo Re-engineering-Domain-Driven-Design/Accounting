@@ -8,13 +8,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import reengineering.ddd.accounting.api.representation.SourceEvidenceReader;
 import reengineering.ddd.accounting.api.representation.SourceEvidenceRequest;
+import reengineering.ddd.accounting.description.AccountDescription;
 import reengineering.ddd.accounting.description.CustomerDescription;
 import reengineering.ddd.accounting.description.SourceEvidenceDescription;
-import reengineering.ddd.accounting.model.Customer;
-import reengineering.ddd.accounting.model.Customers;
-import reengineering.ddd.accounting.model.SourceEvidence;
+import reengineering.ddd.accounting.description.TransactionDescription;
+import reengineering.ddd.accounting.description.basic.Amount;
+import reengineering.ddd.accounting.description.basic.Currency;
+import reengineering.ddd.accounting.model.*;
 
 import javax.ws.rs.core.HttpHeaders;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
@@ -70,8 +74,18 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
     @Test
     public void should_return_source_evidence_matched_by_id() {
         SourceEvidence evidence = mock(SourceEvidence.class);
+        SourceEvidence.Transactions transactions = mock(SourceEvidence.Transactions.class);
+
         when(evidence.identity()).thenReturn("EV-001");
         when(evidence.description()).thenReturn(new EvidenceDescription("ORD-001"));
+        when(evidence.transactions()).thenReturn(transactions);
+
+        Account.Transactions accountTransactions = mock(Account.Transactions.class);
+        Account account = new Account("CASH-01", new AccountDescription(new Amount(new BigDecimal("0"), Currency.CNY)), accountTransactions);
+        Transaction transaction = new Transaction("TX-01", new TransactionDescription(Amount.cny("1000"), LocalDateTime.now()),
+                () -> account, () -> evidence);
+
+        when(transactions.findAll()).thenReturn(new EntityList<>(transaction));
 
         when(sourceEvidences.findByIdentity("EV-001")).thenReturn(Optional.of(evidence));
 
@@ -80,6 +94,11 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
                 .then().statusCode(200)
                 .body("id", is("EV-001"))
                 .body("orderId", is("ORD-001"))
+                .body("transactions.size()", is(1))
+                .body("transactions[0].id", is("TX-01"))
+                .body("transactions[0].amount.value", is(1000))
+                .body("transactions[0].amount.currency", is("CNY"))
+                .body("transactions[0]._links.source-evidence.href", is("/api/customers/" + customer.identity() + "/source-evidences/EV-001"))
                 .body("_links.self.href", is("/api/customers/" + customer.identity() + "/source-evidences/EV-001"));
     }
 

@@ -9,11 +9,15 @@ public class Transaction implements Entity<String, TransactionDescription> {
     private String identity;
     private TransactionDescription description;
 
+    private Supplier<Account> account;
     private Supplier<SourceEvidence> sourceEvidence;
 
-    public Transaction(String identity, TransactionDescription description, Supplier<SourceEvidence> sourceEvidence) {
+    public Transaction(String identity, TransactionDescription description,
+                       Supplier<Account> account,
+                       Supplier<SourceEvidence> sourceEvidence) {
         this.identity = identity;
         this.description = description;
+        this.account = account;
         this.sourceEvidence = sourceEvidence;
     }
 
@@ -29,5 +33,9 @@ public class Transaction implements Entity<String, TransactionDescription> {
 
     public SourceEvidence sourceEvidence() {
         return sourceEvidence.get();
+    }
+
+    public Account account() {
+        return account.get();
     }
 }

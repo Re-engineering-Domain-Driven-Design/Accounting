@@ -28,14 +28,14 @@ public class SourceEvidencesApi {
     @Path("{evidence-id}")
     public SourceEvidenceModel findById(@PathParam("evidence-id") String id,
                                         @Context UriInfo info) {
-        return customer.sourceEvidences().findByIdentity(id).map(evidence -> new SourceEvidenceModel(customer, evidence, info))
+        return customer.sourceEvidences().findByIdentity(id).map(evidence -> SourceEvidenceModel.of(customer, evidence, info))
                 .orElseThrow(() -> new WebApplicationException(Response.Status.NOT_FOUND));
     }
 
     @GET
     public CollectionModel<SourceEvidenceModel> findAll(@Context UriInfo info) {
         return CollectionModel.of(customer.sourceEvidences().findAll().stream()
-                        .map(evidence -> new SourceEvidenceModel(customer, evidence, info)).collect(Collectors.toList()),
+                        .map(evidence -> SourceEvidenceModel.NoTransactions(customer, evidence, info)).collect(Collectors.toList()),
                 Link.of(ApiTemplates.sourceEvidences(info).build(customer.identity()).getPath(), "self"));
     }
 

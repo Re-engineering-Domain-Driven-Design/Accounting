@@ -57,7 +57,8 @@ public class CustomerAccountTransactionsApiTest extends ApiTest {
         SourceEvidence evidence = mock(SourceEvidence.class);
         when(evidence.identity()).thenReturn("EV-001");
 
-        Transaction transaction = new Transaction("TX-01", new TransactionDescription(Amount.cny("1000"), LocalDateTime.now()), () -> evidence);
+        Transaction transaction = new Transaction("TX-01", new TransactionDescription(Amount.cny("1000"), LocalDateTime.now()),
+                () -> account, () -> evidence);
 
         when(transactions.findAll()).thenReturn(new EntityList<>(transaction));
 
