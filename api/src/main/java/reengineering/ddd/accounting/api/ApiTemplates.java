@@ -16,4 +16,13 @@ public class ApiTemplates {
     public static UriBuilder sourceEvidence(UriInfo info) {
         return sourceEvidences(info).path(SourceEvidencesApi.class, "findById");
     }
+
+    public static UriBuilder accounts(UriInfo info) {
+        return customer(info).path(CustomerApi.class, "accounts");
+    }
+
+    public static UriBuilder accountTransactions(UriInfo info) {
+        return accounts(info).path(AccountsApi.class, "findAll");
+    }
+
 }

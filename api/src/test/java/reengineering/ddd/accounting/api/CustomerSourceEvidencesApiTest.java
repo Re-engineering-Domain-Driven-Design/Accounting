@@ -36,7 +36,7 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
 
     @BeforeEach
     public void before() {
-        customer = new Customer("john.smith", new CustomerDescription("John Smith", "john.smith@email.com"), sourceEvidences);
+        customer = new Customer("john.smith", new CustomerDescription("John Smith", "john.smith@email.com"), sourceEvidences, mock(Customer.Accounts.class));
         when(customers.findById(eq(customer.identity()))).thenReturn(Optional.of(customer));
     }
 

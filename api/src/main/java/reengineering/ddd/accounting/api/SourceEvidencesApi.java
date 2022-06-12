@@ -4,7 +4,6 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import reengineering.ddd.accounting.api.representation.SourceEvidenceModel;
 import reengineering.ddd.accounting.api.representation.SourceEvidenceReader;
-import reengineering.ddd.accounting.api.representation.SourceEvidenceRequest;
 import reengineering.ddd.accounting.model.Customer;
 import reengineering.ddd.accounting.model.SourceEvidence;
 

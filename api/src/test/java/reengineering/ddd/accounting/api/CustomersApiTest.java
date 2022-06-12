@@ -1,7 +1,6 @@
 package reengineering.ddd.accounting.api;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import reengineering.ddd.accounting.description.CustomerDescription;
@@ -13,6 +12,7 @@ import java.util.Optional;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class CustomersApiTest extends ApiTest {
@@ -31,7 +31,8 @@ public class CustomersApiTest extends ApiTest {
     public void should_return_customer_if_customer_exists() {
         Customer customer = new Customer("john.smith",
                 new CustomerDescription("John Smith", "john.smith@email.com"),
-                Mockito.mock(Customer.SourceEvidences.class));
+                mock(Customer.SourceEvidences.class),
+                mock(Customer.Accounts.class));
         when(customers.findById(eq(customer.identity()))).thenReturn(Optional.of(customer));
 
         given().accept(MediaTypes.HAL_JSON.toString())

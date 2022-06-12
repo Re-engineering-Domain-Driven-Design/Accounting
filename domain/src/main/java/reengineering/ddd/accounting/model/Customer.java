@@ -1,5 +1,6 @@
 package reengineering.ddd.accounting.model;
 
+import reengineering.ddd.accounting.description.AccountDescription;
 import reengineering.ddd.accounting.description.CustomerDescription;
 import reengineering.ddd.accounting.description.SourceEvidenceDescription;
 import reengineering.ddd.archtype.Entity;
@@ -13,10 +14,14 @@ public class Customer implements Entity<String, CustomerDescription> {
 
     private SourceEvidences sourceEvidences;
 
-    public Customer(String identity, CustomerDescription description, SourceEvidences sourceEvidences) {
+    private Accounts accounts;
+
+    public Customer(String identity, CustomerDescription description,
+                    SourceEvidences sourceEvidences, Accounts accounts) {
         this.identity = identity;
         this.description = description;
         this.sourceEvidences = sourceEvidences;
+        this.accounts = accounts;
     }
 
     public String identity() {
@@ -31,6 +36,10 @@ public class Customer implements Entity<String, CustomerDescription> {
         return sourceEvidences;
     }
 
+    public Accounts accounts() {
+        return accounts;
+    }
+
     public interface SourceEvidences {
 
         EntityCollection<SourceEvidence> findAll();
@@ -38,5 +47,13 @@ public class Customer implements Entity<String, CustomerDescription> {
         Optional<SourceEvidence> findByIdentity(String identifier);
 
         SourceEvidence add(SourceEvidenceDescription description);
+    }
+
+    public interface Accounts {
+        EntityCollection<Account> findAll();
+
+        Optional<Account> findByIdentity(String identifier);
+
+        Account add(AccountDescription description);
     }
 }

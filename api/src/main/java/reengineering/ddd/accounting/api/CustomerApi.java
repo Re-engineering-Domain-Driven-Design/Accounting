@@ -27,4 +27,9 @@ public class CustomerApi {
     public SourceEvidencesApi sourceEvidences(@Context ResourceContext context) {
         return context.initResource(new SourceEvidencesApi(customer));
     }
+
+    @Path("accounts")
+    public AccountsApi accounts() {
+        return new AccountsApi(customer);
+    }
 }
