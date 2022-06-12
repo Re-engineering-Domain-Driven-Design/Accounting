@@ -12,7 +12,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.net.URI;
 import java.util.stream.Collectors;
 
 public class SourceEvidencesApi {
@@ -32,10 +31,8 @@ public class SourceEvidencesApi {
 
     @GET
     public CollectionModel<SourceEvidenceModel> findAll(@Context UriInfo info) {
-        URI self = info.getRequestUri();
-
         return CollectionModel.of(customer.sourceEvidences().findAll().stream()
                         .map(evidence -> new SourceEvidenceModel(customer, evidence, info)).collect(Collectors.toList()),
-                Link.of(self.getPath(), "self"));
+                Link.of(ApiTemplates.sourceEvidences(info).build(customer.identity()).getPath(), "self"));
     }
 }

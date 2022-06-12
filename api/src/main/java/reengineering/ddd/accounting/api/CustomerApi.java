@@ -19,9 +19,7 @@ public class CustomerApi {
 
     @GET
     public CustomerModel get(@Context UriInfo info) {
-        URI self = info.getRequestUri();
-
-        return new CustomerModel(customer, Link.of(self.getPath(), "self"));
+        return new CustomerModel(customer, info);
     }
 
     @Path("source-evidences")
