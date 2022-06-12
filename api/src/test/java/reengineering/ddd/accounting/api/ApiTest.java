@@ -16,7 +16,7 @@ public class ApiTest {
     private String contextPath;
 
     @BeforeEach
-    public void before() {
+    public void setup() {
         RestAssured.port = port;
         RestAssured.basePath = contextPath;
     }

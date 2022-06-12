@@ -37,6 +37,7 @@ public class CustomersApiTest extends ApiTest {
         given().accept(MediaTypes.HAL_JSON.toString())
                 .when().get("/customers/" + customer.identity())
                 .then().statusCode(200)
+                .body("id", is(customer.identity()))
                 .body("name", is(customer.description().name()))
                 .body("email", is(customer.description().email()))
                 .body("_links.self.href", is("/api/customers/" + customer.identity()));

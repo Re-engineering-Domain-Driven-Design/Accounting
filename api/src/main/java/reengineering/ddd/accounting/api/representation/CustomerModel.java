@@ -1,5 +1,6 @@
 package reengineering.ddd.accounting.api.representation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
@@ -9,6 +10,7 @@ import reengineering.ddd.accounting.model.Customer;
 import java.util.Arrays;
 
 public class CustomerModel extends RepresentationModel<CustomerModel> {
+    @JsonProperty
     private String id;
     @JsonUnwrapped
     private CustomerDescription description;

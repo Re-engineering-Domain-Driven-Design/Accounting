@@ -1,7 +1,6 @@
 package reengineering.ddd.accounting.model;
 
 import reengineering.ddd.accounting.description.CustomerDescription;
-import reengineering.ddd.accounting.description.SourceEvidenceType;
 import reengineering.ddd.archtype.Entity;
 import reengineering.ddd.archtype.EntityCollection;
 
@@ -30,6 +29,7 @@ public class Customer implements Entity<String, CustomerDescription> {
     }
 
     public interface SourceEvidences {
-        EntityCollection<SourceEvidence> findByType(SourceEvidenceType type);
+
+        EntityCollection<SourceEvidence> findAll();
     }
 }

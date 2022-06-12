@@ -5,6 +5,7 @@ import reengineering.ddd.accounting.api.representation.CustomerModel;
 import reengineering.ddd.accounting.model.Customer;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
@@ -22,5 +23,10 @@ public class CustomerApi {
                 .path(CustomersApi.class, "findById").build(customer.identity());
 
         return new CustomerModel(customer, Link.of(self.getPath(), "self"));
+    }
+
+    @Path("source-evidences")
+    public SourceEvidencesApi sourceEvidences() {
+        return new SourceEvidencesApi(customer);
     }
 }
