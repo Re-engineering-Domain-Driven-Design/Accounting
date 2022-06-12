@@ -1,6 +1,7 @@
 package reengineering.ddd.accounting.api;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import reengineering.ddd.accounting.description.CustomerDescription;
@@ -29,7 +30,8 @@ public class CustomersApiTest extends ApiTest {
     @Test
     public void should_return_customer_if_customer_exists() {
         Customer customer = new Customer("john.smith",
-                new CustomerDescription("John Smith", "john.smith@email.com"));
+                new CustomerDescription("John Smith", "john.smith@email.com"),
+                Mockito.mock(Customer.SourceEvidences.class));
         when(customers.findById(eq(customer.identity()))).thenReturn(Optional.of(customer));
 
         given().accept(MediaTypes.HAL_JSON.toString())
