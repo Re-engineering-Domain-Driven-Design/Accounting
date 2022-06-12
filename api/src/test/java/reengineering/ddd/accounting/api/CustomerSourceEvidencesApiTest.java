@@ -46,7 +46,8 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
                 .body("_links.self.href", is("/api/customers/" + customer.identity() + "/source-evidences"))
                 .body("_embedded.evidences.size()", is(1))
                 .body("_embedded.evidences[0].id", is("EV-001"))
-                .body("_embedded.evidences[0].orderId", is("ORD-001"));
+                .body("_embedded.evidences[0].orderId", is("ORD-001"))
+                .body("_embedded.evidences[0]._links.self.href", is("/api/customers/" + customer.identity() + "/source-evidences/EV-001"));
     }
 
     @Test
@@ -70,7 +71,8 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
                 .when().get("/customers/" + customer.identity() + "/source-evidences/EV-001")
                 .then().statusCode(200)
                 .body("id", is("EV-001"))
-                .body("orderId", is("ORD-001"));
+                .body("orderId", is("ORD-001"))
+                .body("_links.self.href", is("/api/customers/" + customer.identity() + "/source-evidences/EV-001"));
     }
 
     record EvidenceDescription(String orderId) implements SourceEvidenceDescription {
