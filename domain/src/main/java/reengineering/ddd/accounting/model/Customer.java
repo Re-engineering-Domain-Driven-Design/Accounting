@@ -2,6 +2,7 @@ package reengineering.ddd.accounting.model;
 
 import reengineering.ddd.accounting.description.CustomerDescription;
 import reengineering.ddd.accounting.description.SourceEvidenceDescription;
+import reengineering.ddd.archtype.Association;
 import reengineering.ddd.archtype.Entity;
 import reengineering.ddd.archtype.EntityCollection;
 
@@ -42,18 +43,10 @@ public class Customer implements Entity<String, CustomerDescription> {
         return accounts;
     }
 
-    public interface SourceEvidences {
-
-        EntityCollection<SourceEvidence<?>> findAll();
-
-        Optional<SourceEvidence<?>> findByIdentity(String identifier);
-
+    public interface SourceEvidences extends Association<String, SourceEvidence<?>> {
         SourceEvidence<?> add(SourceEvidenceDescription description);
     }
 
-    public interface Accounts {
-        EntityCollection<Account> findAll();
-
-        Optional<Account> findByIdentity(String identifier);
+    public interface Accounts extends Association<String, Account> {
     }
 }

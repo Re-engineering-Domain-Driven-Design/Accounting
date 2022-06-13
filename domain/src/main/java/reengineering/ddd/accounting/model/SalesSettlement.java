@@ -1,7 +1,10 @@
 package reengineering.ddd.accounting.model;
 
 import reengineering.ddd.accounting.description.SalesSettlementDescription;
-import reengineering.ddd.accounting.description.SourceEvidenceDescription;
+import reengineering.ddd.accounting.description.TransactionDescription;
+
+import java.util.List;
+import java.util.Map;
 
 public class SalesSettlement implements SourceEvidence<SalesSettlementDescription> {
     private String identity;
@@ -31,5 +34,10 @@ public class SalesSettlement implements SourceEvidence<SalesSettlementDescriptio
     @Override
     public Transactions transactions() {
         return transactions;
+    }
+
+    @Override
+    public Map<String, List<TransactionDescription>> toTransactions() {
+        return null;
     }
 }

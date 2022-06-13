@@ -2,6 +2,7 @@ package reengineering.ddd.accounting.model;
 
 import reengineering.ddd.accounting.description.AccountDescription;
 import reengineering.ddd.accounting.description.TransactionDescription;
+import reengineering.ddd.archtype.Association;
 import reengineering.ddd.archtype.Entity;
 import reengineering.ddd.archtype.EntityCollection;
 
@@ -34,8 +35,7 @@ public class Account implements Entity<String, AccountDescription> {
         return transactions;
     }
 
-    public interface Transactions {
-        EntityCollection<Transaction> findAll();
+    public interface Transactions extends Association<String, Transaction> {
 
         Transaction add(TransactionDescription description);
     }

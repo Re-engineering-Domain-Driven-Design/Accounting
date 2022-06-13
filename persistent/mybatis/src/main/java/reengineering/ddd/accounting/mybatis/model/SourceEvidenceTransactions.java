@@ -7,6 +7,7 @@ import reengineering.ddd.archtype.EntityCollection;
 import reengineering.ddd.mybatis.EntityList;
 
 import javax.inject.Inject;
+import java.util.Optional;
 
 public class SourceEvidenceTransactions implements SourceEvidence.Transactions {
     private String sourceEvidenceId;
@@ -17,5 +18,10 @@ public class SourceEvidenceTransactions implements SourceEvidence.Transactions {
     @Override
     public EntityCollection<Transaction> findAll() {
         return new EntityList<>(mapper.findTransactionsBySourceEvidenceId(sourceEvidenceId));
+    }
+
+    @Override
+    public Optional<Transaction> findByIdentity(String identifier) {
+        return Optional.empty();
     }
 }

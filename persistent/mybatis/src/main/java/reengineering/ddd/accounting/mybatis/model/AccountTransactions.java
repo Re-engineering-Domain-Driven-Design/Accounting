@@ -8,6 +8,7 @@ import reengineering.ddd.archtype.EntityCollection;
 import reengineering.ddd.mybatis.EntityList;
 
 import javax.inject.Inject;
+import java.util.Optional;
 
 public class AccountTransactions implements Account.Transactions {
     private String accountId;
@@ -18,6 +19,11 @@ public class AccountTransactions implements Account.Transactions {
     @Override
     public EntityCollection<Transaction> findAll() {
         return new EntityList<>(mapper.findTransactionsByAccountId(accountId));
+    }
+
+    @Override
+    public Optional<Transaction> findByIdentity(String identifier) {
+        return Optional.empty();
     }
 
     @Override
