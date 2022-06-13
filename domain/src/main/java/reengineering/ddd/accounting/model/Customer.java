@@ -1,6 +1,5 @@
 package reengineering.ddd.accounting.model;
 
-import reengineering.ddd.accounting.description.AccountDescription;
 import reengineering.ddd.accounting.description.CustomerDescription;
 import reengineering.ddd.accounting.description.SourceEvidenceDescription;
 import reengineering.ddd.archtype.Entity;

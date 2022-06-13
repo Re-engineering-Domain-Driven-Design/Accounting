@@ -2,7 +2,7 @@ package reengineering.ddd.accounting.mybatis.model;
 
 import org.springframework.stereotype.Component;
 import reengineering.ddd.accounting.model.Customer;
-import reengineering.ddd.accounting.mybatis.mapper.CustomerMapper;
+import reengineering.ddd.accounting.mybatis.ModelMapper;
 
 import javax.inject.Inject;
 import java.util.Optional;
@@ -10,15 +10,15 @@ import java.util.Optional;
 
 @Component
 public class Customers implements reengineering.ddd.accounting.model.Customers {
-    private CustomerMapper mapper;
+    private ModelMapper mapper;
 
     @Inject
-    public Customers(CustomerMapper mapper) {
+    public Customers(ModelMapper mapper) {
         this.mapper = mapper;
     }
 
     @Override
     public Optional<Customer> findById(String id) {
-        return Optional.of(mapper.findById(id));
+        return Optional.of(mapper.findCustomerById(id));
     }
 }

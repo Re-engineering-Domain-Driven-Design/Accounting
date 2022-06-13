@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="model">
+    <resultMap id="account" type="reengineering.ddd.accounting.model.Account">
+        <id property="identity" column="account_id" jdbcType="BIGINT" javaType="String"/>
+        <association property="description" resultMap="description.account" columnPrefix="account_"/>
+    </resultMap>
+
+    <resultMap id="customer" type="reengineering.ddd.accounting.model.Customer">
+        <id property="identity" column="id" jdbcType="BIGINT" javaType="String"/>
+        <association property="description" resultMap="description.customer"/>
+        <association property="sourceEvidences" resultMap="sourceEvidences"/>
+        <association property="accounts" resultMap="accounts"/>
+    </resultMap>
+
+    <resultMap id="sourceEvidences" type="reengineering.ddd.accounting.mybatis.model.CustomerSourceEvidences">
+        <result column="id" property="customerId" javaType="String"/>
+    </resultMap>
+
+    <resultMap id="accounts" type="reengineering.ddd.accounting.mybatis.model.CustomerAccounts">
+        <collection property="accounts" resultMap="account" ofType="reengineering.ddd.accounting.model.Account"/>
+    </resultMap>
+
+    <resultMap id="sourceEvidence" type="reengineering.ddd.accounting.model.SourceEvidence">
+        <discriminator javaType="String" column="type">
+            <case value="sales-settlement" resultMap="salesSettlement"/>
+        </discriminator>
+    </resultMap>
+
+    <resultMap id="salesSettlement" type="reengineering.ddd.accounting.model.SalesSettlement">
+        <id property="identity" column="id" jdbcType="BIGINT" javaType="String"/>
+        <association property="description" column="id" select="loadSalesSettlement"/>
+    </resultMap>
+
+    <select id="loadSalesSettlement" resultMap="description.salesSettlement">
+        select s.id             as id,
+               s.order_id       as order_id,
+               s.account_id     as account_id,
+               s.total_amount   as total_amount,
+               s.total_currency as total_currecny,
+               d.amount         as detail_amount,
+               d.currency       as detail_currency,
+        from sales_settlements s
+                 left outer join sales_settlement_details d on d.sales_settlement_id = s.id
+        where s.id = #{id}
+    </select>
+
+</mapper>

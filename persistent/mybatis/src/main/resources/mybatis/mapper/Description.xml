@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="description">
+    <resultMap id="ref" type="reengineering.ddd.accounting.description.basic.Ref">
+        <constructor>
+            <arg column="id" javaType="Object"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="amount" type="reengineering.ddd.accounting.description.basic.Amount">
+        <constructor>
+            <arg column="amount" javaType="decimal"/>
+            <arg column="currency" javaType="reengineering.ddd.accounting.description.basic.Currency"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="customer" type="reengineering.ddd.accounting.description.CustomerDescription">
+        <constructor>
+            <arg column="name" jdbcType="VARCHAR" javaType="String"/>
+            <arg column="email" jdbcType="VARCHAR" javaType="String"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="account" type="reengineering.ddd.accounting.description.AccountDescription">
+        <constructor>
+            <arg resultMap="amount" javaType="reengineering.ddd.accounting.description.basic.Amount"
+                 columnPrefix="current_"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="salesSettlement"
+               type="reengineering.ddd.accounting.description.SalesSettlementDescription">
+        <association property="order" resultMap="ref" columnPrefix="order_"/>
+        <association property="account" resultMap="ref" columnPrefix="account_"/>
+        <association property="total" resultMap="amount" columnPrefix="total_"/>
+        <collection property="details" resultMap="salesSettlementDetails" columnPrefix="detail_"/>
+    </resultMap>
+
+    <resultMap id="salesSettlementDetails"
+               type="reengineering.ddd.accounting.description.SalesSettlementDescription$Detail">
+        <association property="amount" resultMap="amount"/>
+    </resultMap>
+
+    <resultMap id="transaction" type="reengineering.ddd.accounting.description.TransactionDescription">
+        <constructor>
+            <arg resultMap="amount" javaType="reengineering.ddd.accounting.description.basic.Amount"/>
+            <arg column="create_at" jdbcType="TIMESTAMP"/>
+        </constructor>
+    </resultMap>
+</mapper>
