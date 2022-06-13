@@ -4,6 +4,7 @@
     <resultMap id="account" type="reengineering.ddd.accounting.model.Account">
         <id property="identity" column="account_id" jdbcType="BIGINT" javaType="String"/>
         <association property="description" resultMap="description.account" columnPrefix="account_"/>
+        <association property="transactions" resultMap="accountTransactions"/>
     </resultMap>
 
     <resultMap id="customer" type="reengineering.ddd.accounting.model.Customer">
@@ -30,9 +31,10 @@
     <resultMap id="salesSettlement" type="reengineering.ddd.accounting.model.SalesSettlement">
         <id property="identity" column="id" jdbcType="BIGINT" javaType="String"/>
         <association property="description" column="id" select="loadSalesSettlement"/>
+        <association property="transactions" resultMap="sourceEvidenceTransactions"/>
     </resultMap>
 
-    <resultMap id="accountTransaction" type="reengineering.ddd.accounting.model.Transaction">
+    <resultMap id="transaction" type="reengineering.ddd.accounting.model.Transaction">
         <id property="identity" column="id" jdbcType="BIGINT" javaType="String"/>
         <association property="description" resultMap="description.transaction"/>
         <association property="sourceEvidence" javaType="reengineering.ddd.mybatis.Reference">
@@ -43,9 +45,18 @@
         </association>
     </resultMap>
 
+    <resultMap id="accountTransactions" type="reengineering.ddd.accounting.mybatis.model.AccountTransactions">
+        <result column="account_id" property="accountId" javaType="String"/>
+    </resultMap>
+
+    <resultMap id="sourceEvidenceTransactions"
+               type="reengineering.ddd.accounting.mybatis.model.SourceEvidenceTransactions">
+        <result column="id" property="sourceEvidenceId" javaType="String"/>
+    </resultMap>
+
 
     <select id="loadSalesSettlement" resultMap="description.salesSettlement">
-        select s.id             as id,
+        select s.id             as source_evidence_id,
                s.order_id       as order_id,
                s.account_id     as account_id,
                s.total_amount   as total_amount,

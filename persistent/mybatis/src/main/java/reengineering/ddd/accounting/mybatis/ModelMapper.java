@@ -14,4 +14,6 @@ public interface ModelMapper {
     List<SourceEvidence<?>> findSourceEvidencesByCustomerId(String customerId);
 
     List<Transaction> findTransactionsByAccountId(String accountId);
+
+    List<Transaction> findTransactionsBySourceEvidenceId(String evidenceId);
 }

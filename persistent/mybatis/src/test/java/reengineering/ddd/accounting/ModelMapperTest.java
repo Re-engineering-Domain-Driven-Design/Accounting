@@ -1,5 +1,6 @@
 package reengineering.ddd.accounting;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import reengineering.ddd.accounting.description.SalesSettlementDescription;
@@ -29,15 +30,24 @@ public class ModelMapperTest {
     private String accountId = id();
     private String evidenceId = id();
     private String transactionId = id();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     private static String id() {
         return String.valueOf(new Random().nextInt(100000));
     }
 
+    @BeforeEach
+    public void before() {
+        testData.insertCustomer(customerId, "John Smith", "john.smith@email.com");
+        testData.insertAccounts(accountId, customerId, 100.00, "CNY");
+        testData.insertTransaction(transactionId, accountId, evidenceId, 100.00, "CNY", createdAt);
+        testData.insertSourceEvidence(evidenceId, customerId, "sales-settlement");
+        testData.insertSalesSettlement(evidenceId, orderId, accountId, 100.00, "CNY");
+        testData.insertSalesSettlementDetail(detailId, evidenceId, 100.00, "CNY");
+    }
+
     @Test
     public void should_find_customer_by_id() {
-        testData.insertCustomer(customerId, "John Smith", "john.smith@email.com");
-
         Customer customer = mapper.findCustomerById(customerId);
         assertEquals(customerId, customer.identity());
         assertEquals("John Smith", customer.description().name());
@@ -46,11 +56,6 @@ public class ModelMapperTest {
 
     @Test
     public void should_assign_source_evidences_association() {
-        testData.insertCustomer(customerId, "John Smith", "john.smith@email.com");
-        testData.insertSourceEvidence(evidenceId, customerId, "sales-settlement");
-        testData.insertSalesSettlement(evidenceId, orderId, accountId, 100.00, "CNY");
-        testData.insertSalesSettlementDetail(detailId, evidenceId, 100.00, "CNY");
-
         Customer customer = mapper.findCustomerById(customerId);
 
         EntityCollection<SourceEvidence<?>> evidences = customer.sourceEvidences().findAll();
@@ -60,9 +65,6 @@ public class ModelMapperTest {
 
     @Test
     public void should_assign_accounts_association() {
-        testData.insertCustomer(customerId, "John Smith", "john.smith@email.com");
-        testData.insertAccounts(accountId, customerId, 100.00, "CNY");
-
         Customer customer = mapper.findCustomerById(customerId);
         assertEquals(1, customer.accounts().findAll().size());
 
@@ -72,10 +74,6 @@ public class ModelMapperTest {
 
     @Test
     public void should_read_sales_settlement_as_source_evidence() {
-        testData.insertSourceEvidence(evidenceId, customerId, "sales-settlement");
-        testData.insertSalesSettlement(evidenceId, orderId, accountId, 100.00, "CNY");
-        testData.insertSalesSettlementDetail(detailId, evidenceId, 100.00, "CNY");
-
         List<SourceEvidence<?>> evidences = mapper.findSourceEvidencesByCustomerId(customerId);
         assertEquals(1, evidences.size());
 
@@ -93,14 +91,6 @@ public class ModelMapperTest {
 
     @Test
     public void should_find_transactions_by_account_id() {
-        LocalDateTime createdAt = LocalDateTime.now();
-        testData.insertAccounts(accountId, customerId, 100.00, "CNY");
-        testData.insertTransaction(transactionId, accountId, evidenceId, 100.00, "CNY", createdAt);
-        testData.insertSourceEvidence(evidenceId, customerId, "sales-settlement");
-        testData.insertSalesSettlement(evidenceId, orderId, accountId, 100.00, "CNY");
-        testData.insertSalesSettlementDetail(detailId, evidenceId, 100.00, "CNY");
-
-
         List<Transaction> transactions = mapper.findTransactionsByAccountId(accountId);
 
         assertEquals(1, transactions.size());
@@ -115,4 +105,43 @@ public class ModelMapperTest {
 
         assertEquals(accountId, transaction.account().identity());
     }
+
+    @Test
+    public void should_find_transactions_by_source_evidence_id() {
+        List<Transaction> transactions = mapper.findTransactionsBySourceEvidenceId(evidenceId);
+
+        assertEquals(1, transactions.size());
+        Transaction transaction = transactions.get(0);
+
+        assertEquals(Amount.cny("100.00"), transaction.description().amount());
+        assertEquals(createdAt, transaction.description().createdAt());
+
+        SourceEvidence evidence = transaction.sourceEvidence();
+        assertEquals(evidenceId, evidence.identity());
+        assertTrue(evidence instanceof SalesSettlement);
+
+        assertEquals(accountId, transaction.account().identity());
+    }
+
+    @Test
+    public void should_find_transaction_from_account() {
+        Customer customer = mapper.findCustomerById(customerId);
+        Account account = customer.accounts().findByIdentity(accountId).get();
+
+        EntityCollection<Transaction> transactions = account.transactions().findAll();
+
+        assertEquals(1, transactions.size());
+        assertEquals(transactionId, transactions.stream().toList().get(0).identity());
+    }
+
+    @Test
+    public void should_find_transaction_from_source_evidences() {
+        SourceEvidence<?> evidence = mapper.findSourceEvidencesByCustomerId(customerId).get(0);
+
+        EntityCollection<Transaction> transactions = evidence.transactions().findAll();
+
+        assertEquals(1, transactions.size());
+        assertEquals(transactionId, transactions.stream().toList().get(0).identity());
+    }
+
 }
