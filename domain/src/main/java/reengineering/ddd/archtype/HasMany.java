@@ -2,8 +2,8 @@ package reengineering.ddd.archtype;
 
 import java.util.Optional;
 
-public interface Association<ID, E extends Entity<ID, ?>> {
-    EntityCollection<E> findAll();
+public interface HasMany<ID, E extends Entity<ID, ?>> {
+    Many<E> findAll();
 
     Optional<E> findByIdentity(ID identifier);
 }

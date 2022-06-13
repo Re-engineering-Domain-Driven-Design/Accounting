@@ -2,7 +2,7 @@ package reengineering.ddd.accounting.mybatis.model;
 
 import reengineering.ddd.accounting.model.Account;
 import reengineering.ddd.accounting.model.Customer;
-import reengineering.ddd.archtype.EntityCollection;
+import reengineering.ddd.archtype.Many;
 import reengineering.ddd.mybatis.EntityList;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public class CustomerAccounts implements Customer.Accounts {
     private List<Account> accounts;
 
     @Override
-    public EntityCollection<Account> findAll() {
+    public Many<Account> findAll() {
         return new EntityList<>(accounts);
     }
 

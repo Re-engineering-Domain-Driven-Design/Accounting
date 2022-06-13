@@ -2,21 +2,21 @@ package reengineering.ddd.accounting.model;
 
 import reengineering.ddd.accounting.description.TransactionDescription;
 import reengineering.ddd.archtype.Entity;
-import reengineering.ddd.archtype.EntityReference;
+import reengineering.ddd.archtype.HasOne;
 
 public class Transaction implements Entity<String, TransactionDescription> {
     private String identity;
     private TransactionDescription description;
 
-    private EntityReference<SourceEvidence<?>> sourceEvidence;
+    private HasOne<SourceEvidence<?>> sourceEvidence;
 
-    private EntityReference<Account> account;
+    private HasOne<Account> account;
 
     private Transaction() {
     }
 
     public Transaction(String identity, TransactionDescription description,
-                       EntityReference<Account> account, EntityReference<SourceEvidence<?>> sourceEvidence) {
+                       HasOne<Account> account, HasOne<SourceEvidence<?>> sourceEvidence) {
         this.identity = identity;
         this.description = description;
         this.account = account;

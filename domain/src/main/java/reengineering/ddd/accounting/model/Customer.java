@@ -2,11 +2,8 @@ package reengineering.ddd.accounting.model;
 
 import reengineering.ddd.accounting.description.CustomerDescription;
 import reengineering.ddd.accounting.description.SourceEvidenceDescription;
-import reengineering.ddd.archtype.Association;
+import reengineering.ddd.archtype.HasMany;
 import reengineering.ddd.archtype.Entity;
-import reengineering.ddd.archtype.EntityCollection;
-
-import java.util.Optional;
 
 public class Customer implements Entity<String, CustomerDescription> {
     private String identity;
@@ -43,10 +40,10 @@ public class Customer implements Entity<String, CustomerDescription> {
         return accounts;
     }
 
-    public interface SourceEvidences extends Association<String, SourceEvidence<?>> {
+    public interface SourceEvidences extends HasMany<String, SourceEvidence<?>> {
         SourceEvidence<?> add(SourceEvidenceDescription description);
     }
 
-    public interface Accounts extends Association<String, Account> {
+    public interface Accounts extends HasMany<String, Account> {
     }
 }

@@ -7,7 +7,7 @@ import reengineering.ddd.accounting.description.SalesSettlementDescription;
 import reengineering.ddd.accounting.description.basic.Amount;
 import reengineering.ddd.accounting.model.*;
 import reengineering.ddd.accounting.mybatis.ModelMapper;
-import reengineering.ddd.archtype.EntityCollection;
+import reengineering.ddd.archtype.Many;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
@@ -58,7 +58,7 @@ public class ModelMapperTest {
     public void should_assign_source_evidences_association() {
         Customer customer = mapper.findCustomerById(customerId);
 
-        EntityCollection<SourceEvidence<?>> evidences = customer.sourceEvidences().findAll();
+        Many<SourceEvidence<?>> evidences = customer.sourceEvidences().findAll();
 
         assertEquals(1, evidences.size());
     }
@@ -128,7 +128,7 @@ public class ModelMapperTest {
         Customer customer = mapper.findCustomerById(customerId);
         Account account = customer.accounts().findByIdentity(accountId).get();
 
-        EntityCollection<Transaction> transactions = account.transactions().findAll();
+        Many<Transaction> transactions = account.transactions().findAll();
 
         assertEquals(1, transactions.size());
         assertEquals(transactionId, transactions.stream().toList().get(0).identity());
@@ -138,7 +138,7 @@ public class ModelMapperTest {
     public void should_find_transaction_from_source_evidences() {
         SourceEvidence<?> evidence = mapper.findSourceEvidencesByCustomerId(customerId).get(0);
 
-        EntityCollection<Transaction> transactions = evidence.transactions().findAll();
+        Many<Transaction> transactions = evidence.transactions().findAll();
 
         assertEquals(1, transactions.size());
         assertEquals(transactionId, transactions.stream().toList().get(0).identity());
