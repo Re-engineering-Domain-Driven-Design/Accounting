@@ -40,6 +40,7 @@ public class SourceEvidenceModel extends RepresentationModel<SourceEvidenceModel
     }
 
     public static SourceEvidenceModel of(Customer customer, SourceEvidence<?> evidence, UriInfo info) {
-        return new SourceEvidenceModel(customer, evidence, evidence.description(), evidence.transactions().findAll().stream().map(tx -> new TransactionModel(customer, tx, info)).collect(Collectors.toList()), info);
+        return new SourceEvidenceModel(customer, evidence, evidence.description(), evidence.transactions().findAll().stream().map(tx ->
+                new TransactionModel(customer, tx, info)).collect(Collectors.toList()), info);
     }
 }

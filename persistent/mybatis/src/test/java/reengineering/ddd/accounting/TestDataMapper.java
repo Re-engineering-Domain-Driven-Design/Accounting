@@ -4,6 +4,8 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDateTime;
+
 @Mapper
 public interface TestDataMapper {
     @Insert("INSERT INTO customers(id, name, email) VALUES(#{id}, #{name}, #{email})")
@@ -20,4 +22,7 @@ public interface TestDataMapper {
 
     @Insert("INSERT INTO accounts(id, customer_id, current_amount, current_currency) VALUES(#{id}, #{customer_id}, #{current_amount}, #{current_currency})")
     void insertAccounts(@Param("id") String id, @Param("customer_id") String customerId, @Param("current_amount") double amount, @Param("current_currency") String currency);
+
+    @Insert("INSERT INTO transactions(id, account_id, source_evidence_id, amount, currency, created_at) VALUES(#{id}, #{account_id}, #{source_evidence_id}, #{amount}, #{currency}, #{created_at})")
+    void insertTransaction(@Param("id") String id, @Param("account_id") String accountId, @Param("source_evidence_id") String evidenceId, @Param("amount") double amount, @Param("currency") String currency, @Param("created_at") LocalDateTime createdAt);
 }

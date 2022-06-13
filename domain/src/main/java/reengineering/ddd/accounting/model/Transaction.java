@@ -12,6 +12,9 @@ public class Transaction implements Entity<String, TransactionDescription> {
     private Supplier<Account> account;
     private Supplier<SourceEvidence> sourceEvidence;
 
+    private Transaction() {
+    }
+
     public Transaction(String identity, TransactionDescription description,
                        Supplier<Account> account,
                        Supplier<SourceEvidence> sourceEvidence) {

@@ -18,4 +18,10 @@
         from source_evidences e
         where customer_id = #{customer_id}
     </select>
+
+    <select id="findTransactionsByAccountId" resultMap="model.transaction">
+        select id, account_id, source_evidence_id, amount, currency, created_at
+        from transactions
+        where account_id = #{account_id}
+    </select>
 </mapper>

@@ -44,7 +44,7 @@
     <resultMap id="transaction" type="reengineering.ddd.accounting.description.TransactionDescription">
         <constructor>
             <arg resultMap="amount" javaType="reengineering.ddd.accounting.description.basic.Amount"/>
-            <arg column="create_at" jdbcType="TIMESTAMP"/>
+            <arg column="created_at" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
         </constructor>
     </resultMap>
 </mapper>

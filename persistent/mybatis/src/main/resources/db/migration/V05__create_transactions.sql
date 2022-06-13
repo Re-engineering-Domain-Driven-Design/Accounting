@@ -5,6 +5,6 @@ CREATE TABLE `transactions`
     `source_evidence_id` BIGINT         NOT NULL,
     `amount`             DECIMAL(12, 2) NOT NULL,
     `currency`           VARCHAR(255)   NOT NULL,
-    `create_at`          TIMESTAMP      NOT NULL
+    `created_at`          TIMESTAMP      NOT NULL
 
 )

@@ -22,6 +22,9 @@ public class TransactionModel extends RepresentationModel<TransactionModel> {
     public TransactionModel(Customer customer, Transaction transaction, UriInfo info) {
         this.id = transaction.identity();
         this.description = transaction.description();
-        add(Link.of(ApiTemplates.sourceEvidence(info).build(customer.identity(), transaction.sourceEvidence().identity()).getPath(), "source-evidence"));
+    }
+
+    public static TransactionModel withEvidenceLink(Customer customer, Transaction transaction, UriInfo info) {
+        return new TransactionModel(customer, transaction, info).add(Link.of(ApiTemplates.sourceEvidence(info).build(customer.identity(), transaction.sourceEvidence().identity()).getPath(), "source-evidence"));
     }
 }

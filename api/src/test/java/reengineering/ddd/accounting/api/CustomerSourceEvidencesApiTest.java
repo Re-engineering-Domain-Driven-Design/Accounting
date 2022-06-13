@@ -97,7 +97,6 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
                 .body("transactions[0].id", is("TX-01"))
                 .body("transactions[0].amount.value", is(1000))
                 .body("transactions[0].amount.currency", is("CNY"))
-                .body("transactions[0]._links.source-evidence.href", is("/api/customers/" + customer.identity() + "/source-evidences/EV-001"))
                 .body("_links.self.href", is("/api/customers/" + customer.identity() + "/source-evidences/EV-001"));
     }
 

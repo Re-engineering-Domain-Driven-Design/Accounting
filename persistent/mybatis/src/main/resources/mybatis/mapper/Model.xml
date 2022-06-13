@@ -32,6 +32,11 @@
         <association property="description" column="id" select="loadSalesSettlement"/>
     </resultMap>
 
+    <resultMap id="transaction" type="reengineering.ddd.accounting.model.Transaction">
+        <id property="identity" column="id" jdbcType="BIGINT" javaType="String"/>
+        <association property="description" resultMap="description.transaction"/>
+    </resultMap>
+
     <select id="loadSalesSettlement" resultMap="description.salesSettlement">
         select s.id             as id,
                s.order_id       as order_id,
