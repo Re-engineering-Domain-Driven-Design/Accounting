@@ -17,4 +17,7 @@ public interface TestDataMapper {
 
     @Insert("INSERT INTO sales_settlement_details(id, sales_settlement_id, amount, currency) VALUES(#{id}, #{sales_settlement_id}, #{amount}, #{currency})")
     void insertSalesSettlementDetail(@Param("id") String id, @Param("sales_settlement_id") String salesSettlementId, @Param("amount") double amount, @Param("currency") String currency);
+
+    @Insert("INSERT INTO accounts(id, customer_id, current_amount, current_currency) VALUES(#{id}, #{customer_id}, #{current_amount}, #{current_currency})")
+    void insertAccounts(@Param("id") String id, @Param("customer_id") String customerId, @Param("current_amount") double amount, @Param("current_currency") String currency);
 }

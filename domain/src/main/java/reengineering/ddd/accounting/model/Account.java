@@ -11,6 +11,9 @@ public class Account implements Entity<String, AccountDescription> {
 
     private Transactions transactions;
 
+    private Account() {
+    }
+
     public Account(String identity, AccountDescription description, Transactions transactions) {
         this.identity = identity;
         this.description = description;

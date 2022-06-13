@@ -1,7 +1,8 @@
-package reengineering.ddd.accounting;
+package reengineering.ddd.accounting.mapper;
 
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
+import reengineering.ddd.accounting.TestDataMapper;
 import reengineering.ddd.accounting.description.SalesSettlementDescription;
 import reengineering.ddd.accounting.description.basic.Amount;
 import reengineering.ddd.accounting.model.SalesSettlement;

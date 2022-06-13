@@ -8,7 +8,6 @@ import reengineering.ddd.archtype.EntityCollection;
 import reengineering.ddd.mybatis.EntityList;
 
 import javax.inject.Inject;
-import java.util.List;
 import java.util.Optional;
 
 public class CustomerSourceEvidences implements Customer.SourceEvidences {

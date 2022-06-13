@@ -16,7 +16,6 @@ public class InjectableObjectFactory extends DefaultObjectFactory implements App
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.context = applicationContext;
-
     }
 
     @Override

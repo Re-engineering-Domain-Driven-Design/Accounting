@@ -9,10 +9,7 @@ import reengineering.ddd.accounting.mybatis.model.Customers;
 
 import javax.inject.Inject;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MybatisTest
 @Import(FlywayConfig.class)
@@ -36,10 +33,5 @@ public class CustomersTest {
         assertEquals("1", customer.identity());
         assertEquals("John Smith", customer.description().name());
         assertEquals("john.smith@email.com", customer.description().email());
-    }
-
-    @Test
-    public void should_get_source_evidences() {
-
     }
 }

@@ -56,7 +56,5 @@ public class Customer implements Entity<String, CustomerDescription> {
         EntityCollection<Account> findAll();
 
         Optional<Account> findByIdentity(String identifier);
-
-        Account add(AccountDescription description);
     }
 }

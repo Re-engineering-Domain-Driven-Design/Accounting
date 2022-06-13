@@ -7,6 +7,5 @@ import reengineering.ddd.accounting.model.Customer;
 @Mapper
 @Component
 public interface CustomerMapper {
-
     Customer findById(String id);
 }
