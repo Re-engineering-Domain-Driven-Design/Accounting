@@ -3,7 +3,6 @@ package reengineering.ddd.accounting.api;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import reengineering.ddd.accounting.api.representation.SourceEvidenceReader;
@@ -81,8 +80,8 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
 
         Account.Transactions accountTransactions = mock(Account.Transactions.class);
         Account account = new Account("CASH-01", new AccountDescription(new Amount(new BigDecimal("0"), Currency.CNY)), accountTransactions);
-        Transaction transaction = new Transaction("TX-01", new TransactionDescription(Amount.cny("1000"), LocalDateTime.now()),
-                () -> account, () -> evidence);
+        Transaction transaction = new Transaction("TX-01", new TransactionDescription(Amount.cny("1000"), LocalDateTime.now()), () -> account,
+                () -> evidence);
 
         when(transactions.findAll()).thenReturn(new EntityList<>(transaction));
 

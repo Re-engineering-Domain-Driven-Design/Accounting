@@ -19,9 +19,22 @@
         where customer_id = #{customer_id}
     </select>
 
-    <select id="findTransactionsByAccountId" resultMap="model.transaction">
-        select id, account_id, source_evidence_id, amount, currency, created_at
-        from transactions
-        where account_id = #{account_id}
+    <select id="findTransactionsByAccountId" resultMap="model.accountTransaction">
+        select t.id                 as id,
+               t.account_id         as account_id,
+               t.source_evidence_id as source_evidence_id,
+               t.amount             as amount,
+               t.currency           as currency,
+               t.created_at         as created_at,
+               s.id                 as evidence_id,
+               s.customer_id        as evidence_customer_id,
+               s.type               as evidence_type,
+               a.id                 as account_id,
+               a.current_amount     as account_current_amount,
+               a.current_currency   as account_current_currency
+        from transactions t
+                 left outer join source_evidences s on s.id = t.source_evidence_id
+                 left outer join accounts a on a.id = t.account_id
+        where t.account_id = #{account_id}
     </select>
 </mapper>

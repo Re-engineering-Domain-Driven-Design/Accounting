@@ -9,12 +9,12 @@ import reengineering.ddd.accounting.mybatis.ModelMapper;
 import reengineering.ddd.archtype.EntityCollection;
 
 import javax.inject.Inject;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MybatisTest
 public class ModelMapperTest {
@@ -94,12 +94,25 @@ public class ModelMapperTest {
     @Test
     public void should_find_transactions_by_account_id() {
         LocalDateTime createdAt = LocalDateTime.now();
+        testData.insertAccounts(accountId, customerId, 100.00, "CNY");
         testData.insertTransaction(transactionId, accountId, evidenceId, 100.00, "CNY", createdAt);
+        testData.insertSourceEvidence(evidenceId, customerId, "sales-settlement");
+        testData.insertSalesSettlement(evidenceId, orderId, accountId, 100.00, "CNY");
+        testData.insertSalesSettlementDetail(detailId, evidenceId, 100.00, "CNY");
+
 
         List<Transaction> transactions = mapper.findTransactionsByAccountId(accountId);
 
         assertEquals(1, transactions.size());
-        assertEquals(Amount.cny("100.00"), transactions.get(0).description().amount());
-        assertEquals(createdAt, transactions.get(0).description().createdAt());
+        Transaction transaction = transactions.get(0);
+
+        assertEquals(Amount.cny("100.00"), transaction.description().amount());
+        assertEquals(createdAt, transaction.description().createdAt());
+
+        SourceEvidence evidence = transaction.sourceEvidence();
+        assertEquals(evidenceId, evidence.identity());
+        assertTrue(evidence instanceof SalesSettlement);
+
+        assertEquals(accountId, transaction.account().identity());
     }
 }

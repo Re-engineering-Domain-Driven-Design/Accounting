@@ -32,10 +32,17 @@
         <association property="description" column="id" select="loadSalesSettlement"/>
     </resultMap>
 
-    <resultMap id="transaction" type="reengineering.ddd.accounting.model.Transaction">
+    <resultMap id="accountTransaction" type="reengineering.ddd.accounting.model.Transaction">
         <id property="identity" column="id" jdbcType="BIGINT" javaType="String"/>
         <association property="description" resultMap="description.transaction"/>
+        <association property="sourceEvidence" javaType="reengineering.ddd.mybatis.Reference">
+            <association property="entity" resultMap="sourceEvidence" columnPrefix="evidence_"/>
+        </association>
+        <association property="account" javaType="reengineering.ddd.mybatis.Reference">
+            <association property="entity" resultMap="account"/>
+        </association>
     </resultMap>
+
 
     <select id="loadSalesSettlement" resultMap="description.salesSettlement">
         select s.id             as id,

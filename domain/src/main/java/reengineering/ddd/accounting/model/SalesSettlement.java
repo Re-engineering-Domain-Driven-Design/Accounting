@@ -9,7 +9,7 @@ public class SalesSettlement implements SourceEvidence<SalesSettlementDescriptio
 
     private Transactions transactions;
 
-    private SalesSettlement() {
+    public SalesSettlement() {
     }
 
     public SalesSettlement(String identity, SalesSettlementDescription description, Transactions transactions) {
