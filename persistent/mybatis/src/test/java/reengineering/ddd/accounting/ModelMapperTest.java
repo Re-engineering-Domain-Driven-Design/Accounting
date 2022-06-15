@@ -192,9 +192,11 @@ public class ModelMapperTest {
     @Test
     public void should_insert_sales_settlement() {
         IdHolder holder = new IdHolder();
-        mapper.insertSalesSettlement(holder, customerId);
-        mapper.insertSalesSettlementDescription(holder.id(), new SalesSettlementDescription(new Ref<>(orderId),
-                Amount.cny("1000.00"), new Ref<>(accountId), new SalesSettlementDescription.Detail(Amount.cny("1000.00"))));
+        SalesSettlementDescription description = new SalesSettlementDescription(new Ref<>(orderId),
+                Amount.cny("1000.00"), new Ref<>(accountId), new SalesSettlementDescription.Detail(Amount.cny("1000.00")));
+
+        mapper.insertSourceEvidence(holder, customerId, description);
+        mapper.insertSourceEvidenceDescription(holder.id(), description);
 
         SalesSettlement evidence = (SalesSettlement) mapper.findSourceEvidenceById(holder.id());
         assertEquals(Amount.cny("1000.00"), evidence.description().getTotal());

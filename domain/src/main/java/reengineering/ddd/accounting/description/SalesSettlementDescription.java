@@ -5,7 +5,7 @@ import reengineering.ddd.accounting.description.basic.Ref;
 
 import java.util.List;
 
-public class SalesSettlementDescription implements SourceEvidenceDescription {
+    public class SalesSettlementDescription implements SourceEvidenceDescription {
     private Ref<String> order;
 
     private Amount total;

@@ -6,6 +6,7 @@ import reengineering.ddd.accounting.model.SourceEvidence;
 import reengineering.ddd.accounting.mybatis.ModelMapper;
 import reengineering.ddd.archtype.Many;
 import reengineering.ddd.mybatis.EntityList;
+import reengineering.ddd.mybatis.support.IdHolder;
 
 import javax.inject.Inject;
 import java.util.Optional;
@@ -28,6 +29,9 @@ public class CustomerSourceEvidences implements Customer.SourceEvidences {
 
     @Override
     public SourceEvidence<?> add(SourceEvidenceDescription description) {
-        return null;
+        IdHolder holder = new IdHolder();
+        mapper.insertSourceEvidence(holder, customerId, description);
+        mapper.insertSourceEvidenceDescription(holder.id(), description);
+        return mapper.findSourceEvidenceById(holder.id());
     }
 }

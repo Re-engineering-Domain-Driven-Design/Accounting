@@ -10,4 +10,3 @@ mybatis:
   mapper-locations: classpath:mybatis/mapper/**/*.xml
   configuration:
     object-factory: reengineering.ddd.mybatis.support.InjectableObjectFactory
-    
