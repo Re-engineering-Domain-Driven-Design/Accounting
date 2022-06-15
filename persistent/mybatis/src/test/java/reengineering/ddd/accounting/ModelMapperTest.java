@@ -15,6 +15,7 @@ import reengineering.ddd.mybatis.support.IdHolder;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -204,5 +205,13 @@ public class ModelMapperTest {
         assertEquals(1, evidence.description().getDetails().size());
         SalesSettlementDescription.Detail detail = evidence.description().getDetails().get(0);
         assertEquals(Amount.cny("1000.00"), detail.getAmount());
+    }
+
+    @Test
+    public void should_update_account_amount() {
+        mapper.updateAccount(customerId, accountId, new Account.AccountChange(Amount.cny("100.00")));
+
+        Account account = mapper.findCustomerById(customerId).accounts().findByIdentity(accountId).get();
+        assertEquals(Amount.cny("200.00"), account.description().current());
     }
 }

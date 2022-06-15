@@ -132,6 +132,13 @@
         </choose>
     </insert>
 
+    <update id="updateAccount">
+        update accounts
+        set current_amount = current_amount + #{change.total.value}
+        where customer_id = #{customer_id}
+          and id = #{id};
+    </update>
+
     <sql id="insertSalesSettlementDescription">
         insert into sales_settlements (id, order_id, account_id, total_amount, total_currency)
         values (#{id}, #{description.order.id}, #{description.account.id}, #{description.total.value},

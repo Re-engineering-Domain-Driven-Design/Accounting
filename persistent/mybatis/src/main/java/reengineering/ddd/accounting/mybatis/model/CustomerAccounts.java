@@ -2,6 +2,7 @@ package reengineering.ddd.accounting.mybatis.model;
 
 import reengineering.ddd.accounting.model.Account;
 import reengineering.ddd.accounting.model.Customer;
+import reengineering.ddd.accounting.mybatis.ModelMapper;
 import reengineering.ddd.archtype.Many;
 import reengineering.ddd.mybatis.EntityList;
 
@@ -10,6 +11,10 @@ import java.util.Optional;
 
 public class CustomerAccounts implements Customer.Accounts {
     private List<Account> accounts;
+
+    private ModelMapper mapper;
+
+    private String customerId;
 
     @Override
     public Many<Account> findAll() {
@@ -22,7 +27,7 @@ public class CustomerAccounts implements Customer.Accounts {
     }
 
     @Override
-    public void update(Account.AccountChange change) {
-
+    public void update(Account account, Account.AccountChange change) {
+        mapper.updateAccount(customerId, account.identity(), change);
     }
 }

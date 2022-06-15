@@ -2,8 +2,6 @@ package reengineering.ddd.accounting.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import reengineering.ddd.accounting.description.AccountDescription;
 import reengineering.ddd.accounting.description.CustomerDescription;
 import reengineering.ddd.accounting.description.SourceEvidenceDescription;
@@ -63,8 +61,8 @@ public class CustomerTest {
         assertEquals(Amount.cny("3000.00"), cash01.description().current());
         assertEquals(Amount.cny("7000.00"), cash02.description().current());
 
-        verify(accounts, times(1)).update(eq(new Account.AccountChange(Amount.cny("3000.00"))));
-        verify(accounts, times(1)).update(eq(new Account.AccountChange(Amount.cny("7000.00"))));
+        verify(accounts, times(1)).update(eq(cash01), eq(new Account.AccountChange(Amount.cny("3000.00"))));
+        verify(accounts, times(1)).update(eq(cash02), eq(new Account.AccountChange(Amount.cny("7000.00"))));
     }
 
     @Test

@@ -19,6 +19,7 @@
     </resultMap>
 
     <resultMap id="accounts" type="reengineering.ddd.accounting.mybatis.model.CustomerAccounts">
+        <result column="id" property="customerId" javaType="String"/>
         <collection property="accounts" resultMap="account" ofType="reengineering.ddd.accounting.model.Account"/>
     </resultMap>
 

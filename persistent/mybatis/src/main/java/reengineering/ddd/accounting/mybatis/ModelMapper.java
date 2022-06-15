@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import reengineering.ddd.accounting.description.SourceEvidenceDescription;
 import reengineering.ddd.accounting.description.TransactionDescription;
+import reengineering.ddd.accounting.model.Account;
 import reengineering.ddd.accounting.model.Customer;
 import reengineering.ddd.accounting.model.SourceEvidence;
 import reengineering.ddd.accounting.model.Transaction;
@@ -35,4 +36,6 @@ public interface ModelMapper {
     void insertSourceEvidence(@Param("holder") IdHolder id, @Param("customer_id") String customerId, @Param("description") SourceEvidenceDescription description);
 
     void insertSourceEvidenceDescription(@Param("id") String id, @Param("description") SourceEvidenceDescription description);
+
+    void updateAccount(@Param("customer_id") String customerId, @Param("id") String accountId, @Param("change") Account.AccountChange change);
 }
