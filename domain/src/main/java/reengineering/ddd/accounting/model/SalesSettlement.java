@@ -39,7 +39,7 @@ public class SalesSettlement implements SourceEvidence<SalesSettlementDescriptio
 
     @Override
     public Map<String, List<TransactionDescription>> toTransactions() {
-        return Map.of(description.account().id(),
-                description.details().stream().map(detail -> new TransactionDescription(detail.amount(), LocalDateTime.now())).toList());
+        return Map.of(description.getAccount().id(),
+                description.getDetails().stream().map(detail -> new TransactionDescription(detail.getAmount(), LocalDateTime.now())).toList());
     }
 }
