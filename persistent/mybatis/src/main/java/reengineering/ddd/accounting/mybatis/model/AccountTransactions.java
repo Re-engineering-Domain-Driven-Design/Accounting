@@ -2,6 +2,7 @@ package reengineering.ddd.accounting.mybatis.model;
 
 import reengineering.ddd.accounting.description.TransactionDescription;
 import reengineering.ddd.accounting.model.Account;
+import reengineering.ddd.accounting.model.SourceEvidence;
 import reengineering.ddd.accounting.model.Transaction;
 import reengineering.ddd.accounting.mybatis.ModelMapper;
 import reengineering.ddd.archtype.Many;
@@ -27,7 +28,7 @@ public class AccountTransactions implements Account.Transactions {
     }
 
     @Override
-    public Transaction add(TransactionDescription description) {
+    public Transaction add(Account account, SourceEvidence<?> evidence, TransactionDescription description) {
         return null;
     }
 }

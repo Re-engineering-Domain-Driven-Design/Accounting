@@ -48,10 +48,8 @@ public class Customer implements Entity<String, CustomerDescription> {
     public SourceEvidence<?> add(SourceEvidenceDescription description) {
         SourceEvidence<?> evidence = sourceEvidences.add(description);
         Map<String, List<TransactionDescription>> transactions = evidence.toTransactions();
-        for (String accountId : transactions.keySet()) {
-            Account account = accounts.findByIdentity(accountId).orElseThrow(() -> new AccountNotFoundException(accountId));
-            transactions.get(accountId).forEach(account.transactions()::add);
-        }
+        for (String accountId : transactions.keySet())
+            accounts.findByIdentity(accountId).orElseThrow(() -> new AccountNotFoundException(accountId)).add(evidence, transactions.get(accountId));
         return evidence;
     }
 

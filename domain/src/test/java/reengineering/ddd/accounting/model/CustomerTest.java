@@ -78,13 +78,6 @@ public class CustomerTest {
     static class TransactionList implements Account.Transactions {
         List<TransactionDescription> descriptions = new ArrayList<>();
 
-
-        @Override
-        public Transaction add(TransactionDescription description) {
-            descriptions.add(description);
-            return mock(Transaction.class);
-        }
-
         @Override
         public Many<Transaction> findAll() {
             throw new UnsupportedOperationException();
@@ -93,6 +86,12 @@ public class CustomerTest {
         @Override
         public Optional<Transaction> findByIdentity(String identifier) {
             throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Transaction add(Account account, SourceEvidence<?> evidence, TransactionDescription description) {
+            descriptions.add(description);
+            return mock(Transaction.class);
         }
     }
 }
