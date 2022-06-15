@@ -20,4 +20,9 @@ public class CustomerAccounts implements Customer.Accounts {
     public Optional<Account> findByIdentity(String identifier) {
         return accounts.stream().filter(a -> a.identity().equals(identifier)).findFirst();
     }
+
+    @Override
+    public void update(Account.AccountChange change) {
+
+    }
 }

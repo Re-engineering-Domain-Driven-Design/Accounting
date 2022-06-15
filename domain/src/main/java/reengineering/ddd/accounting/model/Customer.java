@@ -48,7 +48,7 @@ public class Customer implements Entity<String, CustomerDescription> {
         SourceEvidence<?> evidence = sourceEvidences.add(description);
         Map<String, List<TransactionDescription>> transactions = evidence.toTransactions();
         for (String accountId : transactions.keySet())
-            accounts.findByIdentity(accountId).orElseThrow(() -> new AccountNotFoundException(accountId)).add(evidence, transactions.get(accountId));
+            accounts.update(accounts.findByIdentity(accountId).orElseThrow(() -> new AccountNotFoundException(accountId)).add(evidence, transactions.get(accountId)));
         return evidence;
     }
 
@@ -57,5 +57,6 @@ public class Customer implements Entity<String, CustomerDescription> {
     }
 
     public interface Accounts extends HasMany<String, Account> {
+        void update(Account.AccountChange change);
     }
 }
