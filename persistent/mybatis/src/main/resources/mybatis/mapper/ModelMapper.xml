@@ -149,4 +149,23 @@
         </foreach>
     </sql>
 
+    <select id="countTransactionsInAccount">
+        select count(id)
+        from transactions
+        where account_id = #{id}
+    </select>
+
+    <select id="countSourceEvidencesByCustomer">
+        select count(id)
+        from source_evidences
+        where customer_id = #{id}
+    </select>
+
+    <select id="countTransactionsBySourceEvidence">
+        select count(id)
+        from transactions
+        where source_evidence_id = #{id}
+    </select>
+
+
 </mapper>

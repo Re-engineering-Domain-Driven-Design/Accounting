@@ -38,4 +38,10 @@ public interface ModelMapper {
     void insertSourceEvidenceDescription(@Param("id") String id, @Param("description") SourceEvidenceDescription description);
 
     void updateAccount(@Param("customer_id") String customerId, @Param("id") String accountId, @Param("change") Account.AccountChange change);
+
+    int countTransactionsInAccount(String accountId);
+
+    int countSourceEvidencesByCustomer(String customerId);
+
+    int countTransactionsBySourceEvidence(String sourceEvidenceId);
 }

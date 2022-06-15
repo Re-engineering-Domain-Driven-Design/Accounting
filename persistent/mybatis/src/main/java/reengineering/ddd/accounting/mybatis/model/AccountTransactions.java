@@ -5,27 +5,36 @@ import reengineering.ddd.accounting.model.Account;
 import reengineering.ddd.accounting.model.SourceEvidence;
 import reengineering.ddd.accounting.model.Transaction;
 import reengineering.ddd.accounting.mybatis.ModelMapper;
-import reengineering.ddd.archtype.Many;
-import reengineering.ddd.mybatis.EntityList;
+import reengineering.ddd.mybatis.database.EntityList;
 import reengineering.ddd.mybatis.support.IdHolder;
 
 import javax.inject.Inject;
-import java.util.Optional;
+import java.util.List;
 
-public class AccountTransactions implements Account.Transactions {
+public class AccountTransactions extends EntityList<String, Transaction> implements Account.Transactions {
     private String accountId;
 
     @Inject
     private ModelMapper mapper;
 
     @Override
-    public Many<Transaction> findAll() {
-        return new EntityList<>(mapper.findTransactionsByAccountId(accountId));
+    protected List<Transaction> findAllEntities() {
+        return mapper.findTransactionsByAccountId(accountId);
     }
 
     @Override
-    public Optional<Transaction> findByIdentity(String identifier) {
-        return Optional.of(mapper.findTransactionByAccountAndId(accountId, identifier));
+    protected List<Transaction> findEntities(int from, int to) {
+        return mapper.findTransactionsByAccountId(accountId);
+    }
+
+    @Override
+    protected Transaction findEntity(String id) {
+        return mapper.findTransactionByAccountAndId(accountId, id);
+    }
+
+    @Override
+    public int size() {
+        return mapper.countTransactionsInAccount(accountId);
     }
 
     @Override

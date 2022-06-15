@@ -3,28 +3,12 @@ package reengineering.ddd.accounting.mybatis.model;
 import reengineering.ddd.accounting.model.Account;
 import reengineering.ddd.accounting.model.Customer;
 import reengineering.ddd.accounting.mybatis.ModelMapper;
-import reengineering.ddd.archtype.Many;
-import reengineering.ddd.mybatis.EntityList;
+import reengineering.ddd.mybatis.memory.EntityList;
 
-import java.util.List;
-import java.util.Optional;
-
-public class CustomerAccounts implements Customer.Accounts {
-    private List<Account> accounts;
-
+public class CustomerAccounts extends EntityList<String, Account> implements Customer.Accounts {
     private ModelMapper mapper;
 
     private String customerId;
-
-    @Override
-    public Many<Account> findAll() {
-        return new EntityList<>(accounts);
-    }
-
-    @Override
-    public Optional<Account> findByIdentity(String identifier) {
-        return accounts.stream().filter(a -> a.identity().equals(identifier)).findFirst();
-    }
 
     @Override
     public void update(Account account, Account.AccountChange change) {

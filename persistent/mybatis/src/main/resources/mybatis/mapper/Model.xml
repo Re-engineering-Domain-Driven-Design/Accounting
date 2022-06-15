@@ -20,7 +20,7 @@
 
     <resultMap id="accounts" type="reengineering.ddd.accounting.mybatis.model.CustomerAccounts">
         <result column="id" property="customerId" javaType="String"/>
-        <collection property="accounts" resultMap="account" ofType="reengineering.ddd.accounting.model.Account"/>
+        <collection property="list" resultMap="account" ofType="reengineering.ddd.accounting.model.Account"/>
     </resultMap>
 
     <resultMap id="sourceEvidence" type="reengineering.ddd.accounting.model.SourceEvidence">
@@ -38,10 +38,10 @@
     <resultMap id="transaction" type="reengineering.ddd.accounting.model.Transaction">
         <id property="identity" column="id" jdbcType="BIGINT" javaType="String"/>
         <association property="description" resultMap="description.transaction"/>
-        <association property="sourceEvidence" javaType="reengineering.ddd.mybatis.Reference">
+        <association property="sourceEvidence" javaType="reengineering.ddd.mybatis.memory.Reference">
             <association property="entity" resultMap="sourceEvidence" columnPrefix="evidence_"/>
         </association>
-        <association property="account" javaType="reengineering.ddd.mybatis.Reference">
+        <association property="account" javaType="reengineering.ddd.mybatis.memory.Reference">
             <association property="entity" resultMap="account"/>
         </association>
     </resultMap>
