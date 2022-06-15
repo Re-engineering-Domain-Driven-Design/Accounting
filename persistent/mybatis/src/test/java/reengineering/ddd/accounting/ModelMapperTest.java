@@ -6,6 +6,7 @@ import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import reengineering.ddd.accounting.description.SalesSettlementDescription;
 import reengineering.ddd.accounting.description.TransactionDescription;
 import reengineering.ddd.accounting.description.basic.Amount;
+import reengineering.ddd.accounting.description.basic.Ref;
 import reengineering.ddd.accounting.model.*;
 import reengineering.ddd.accounting.mybatis.ModelMapper;
 import reengineering.ddd.archtype.Many;
@@ -186,5 +187,20 @@ public class ModelMapperTest {
         Transaction transaction = mapper.findTransactionByAccountAndId(accountId, holder.id());
         assertEquals(Amount.cny("400.00"), transaction.description().amount());
         assertEquals(created, transaction.description().createdAt());
+    }
+
+    @Test
+    public void should_insert_sales_settlement() {
+        IdHolder holder = new IdHolder();
+        mapper.insertSalesSettlement(holder, customerId);
+        mapper.insertSalesSettlementDescription(holder.id(), new SalesSettlementDescription(new Ref<>(orderId),
+                Amount.cny("1000.00"), new Ref<>(accountId), new SalesSettlementDescription.Detail(Amount.cny("1000.00"))));
+
+        SalesSettlement evidence = (SalesSettlement) mapper.findSourceEvidenceById(holder.id());
+        assertEquals(Amount.cny("1000.00"), evidence.description().getTotal());
+
+        assertEquals(1, evidence.description().getDetails().size());
+        SalesSettlementDescription.Detail detail = evidence.description().getDetails().get(0);
+        assertEquals(Amount.cny("1000.00"), detail.getAmount());
     }
 }

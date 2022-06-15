@@ -109,4 +109,21 @@
         values (#{account_id}, #{evidence_id},
                 #{description.amount.value}, #{description.amount.currency}, #{description.createdAt});
     </insert>
+
+    <insert id="insertSalesSettlement" useGeneratedKeys="true" keyProperty="holder.id" keyColumn="id"
+            parameterType="reengineering.ddd.mybatis.support.IdHolder">
+        insert into source_evidences (customer_id, `type`)
+        values (#{customer_id}, 'sales-settlement');
+    </insert>
+
+    <insert id="insertSalesSettlementDescription">
+        insert into sales_settlements (id, order_id, account_id, total_amount, total_currency)
+        values (#{id}, #{description.order.id}, #{description.account.id}, #{description.total.value},
+        #{description.total.currency});
+        insert into sales_settlement_details(sales_settlement_id, amount, currency) values
+        <foreach collection="description.details" item="detail" separator=",">
+            (#{id}, #{detail.amount.value}, #{detail.amount.currency})
+        </foreach>
+    </insert>
+
 </mapper>

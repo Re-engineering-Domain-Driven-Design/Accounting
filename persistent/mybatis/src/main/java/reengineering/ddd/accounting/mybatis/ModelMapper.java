@@ -2,6 +2,7 @@ package reengineering.ddd.accounting.mybatis;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import reengineering.ddd.accounting.description.SalesSettlementDescription;
 import reengineering.ddd.accounting.description.TransactionDescription;
 import reengineering.ddd.accounting.model.Customer;
 import reengineering.ddd.accounting.model.SourceEvidence;
@@ -30,4 +31,8 @@ public interface ModelMapper {
                            @Param("account_id") String accountId,
                            @Param("evidence_id") String evidenceId,
                            @Param("description") TransactionDescription transactionDescription);
+
+    void insertSalesSettlement(@Param("holder") IdHolder id, @Param("customer_id") String customerId);
+
+    void insertSalesSettlementDescription(@Param("id") String id, @Param("description") SalesSettlementDescription description);
 }
