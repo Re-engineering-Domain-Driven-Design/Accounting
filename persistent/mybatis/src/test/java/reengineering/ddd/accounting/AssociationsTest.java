@@ -143,7 +143,6 @@ public class AssociationsTest {
         assertEquals(100, evidences.size());
     }
 
-
     @Test
     public void should_find_source_evidence_of_customer() {
         SourceEvidence<?> sourceEvidence = customer.sourceEvidences().findByIdentity("0").get();

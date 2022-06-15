@@ -52,7 +52,8 @@
 
     <resultMap id="sourceEvidenceTransactions"
                type="reengineering.ddd.accounting.mybatis.associations.SourceEvidenceTransactions">
-        <result column="evidence_id" property="sourceEvidenceId" javaType="String"/>
+        <id column="evidence_id"/>
+        <collection property="list" resultMap="transaction"/>
     </resultMap>
 
 
@@ -68,7 +69,7 @@
                d.currency       as detail_currency,
         from sales_settlements s
                  left outer join sales_settlement_details d on d.sales_settlement_id = s.id
-        where s.id = #{id}
+        where s.id = #{evidence_id}
     </select>
 
 </mapper>
