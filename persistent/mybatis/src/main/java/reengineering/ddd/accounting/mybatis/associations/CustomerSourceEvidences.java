@@ -17,13 +17,8 @@ public class CustomerSourceEvidences extends EntityList<String, SourceEvidence<?
     private ModelMapper mapper;
 
     @Override
-    protected List<SourceEvidence<?>> findAllEntities() {
-        return mapper.findSourceEvidencesByCustomerId(customerId);
-    }
-
-    @Override
     protected List<SourceEvidence<?>> findEntities(int from, int to) {
-        return mapper.findSourceEvidencesByCustomerId(customerId);
+        return mapper.findSourceEvidencesByCustomerId(customerId, from, to - from);
     }
 
     @Override

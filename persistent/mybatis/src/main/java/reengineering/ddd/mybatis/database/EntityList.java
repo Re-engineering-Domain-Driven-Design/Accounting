@@ -26,10 +26,40 @@ public abstract class EntityList<Id, E extends Entity<Id, ?>> implements Many<E>
 
     @Override
     public final Iterator<E> iterator() {
-        return findAllEntities().iterator();
+        return new BatchIterator();
     }
 
-    protected abstract List<E> findAllEntities();
+    private class BatchIterator implements Iterator<E> {
+
+        private Iterator<E> iterator;
+        private int size;
+        private int current = 0;
+
+        public BatchIterator() {
+            this.size = size();
+            this.iterator = nextBatch();
+        }
+
+        private Iterator<E> nextBatch() {
+            return subCollection(current, Math.min(current + batchSize(), size)).iterator();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current < size;
+        }
+
+        @Override
+        public E next() {
+            if (!iterator.hasNext()) iterator = nextBatch();
+            current++;
+            return iterator.next();
+        }
+    }
+
+    protected int batchSize() {
+        return 100;
+    }
 
     protected abstract List<E> findEntities(int from, int to);
 

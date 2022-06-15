@@ -16,11 +16,16 @@ import java.util.List;
 public interface ModelMapper {
     Customer findCustomerById(String id);
 
-    List<SourceEvidence<?>> findSourceEvidencesByCustomerId(String customerId);
+    List<SourceEvidence<?>> findSourceEvidencesByCustomerId(@Param("customer_id") String customerId,
+                                                            @Param("from") int from,
+                                                            @Param("size") int size);
+
 
     SourceEvidence<?> findSourceEvidenceByCustomerAndId(@Param("customer_id") String customerId, @Param("id") String id);
 
-    List<Transaction> findTransactionsByAccountId(String accountId);
+    List<Transaction> findTransactionsByAccountId(@Param("account_id") String accountId,
+                                                  @Param("from") int from,
+                                                  @Param("size") int size);
 
     List<Transaction> findTransactionsBySourceEvidenceId(String evidenceId);
 

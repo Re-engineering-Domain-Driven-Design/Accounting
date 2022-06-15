@@ -17,6 +17,7 @@
         select id, customer_id, type
         from source_evidences e
         where customer_id = #{customer_id}
+        limit #{from}, #{size}
     </select>
 
     <select id="findSourceEvidenceByCustomerAndId" resultMap="model.sourceEvidence">
@@ -42,7 +43,8 @@
         from transactions t
                  left outer join source_evidences s on s.id = t.source_evidence_id
                  left outer join accounts a on a.id = t.account_id
-        where t.account_id = #{account_id}
+        where t.account_id = #{account_id} limit #{from}
+            , #{size}
     </select>
 
     <select id="findTransactionsBySourceEvidenceId" resultMap="model.transaction">

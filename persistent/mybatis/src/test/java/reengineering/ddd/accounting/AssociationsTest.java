@@ -9,10 +9,13 @@ import org.springframework.context.annotation.Import;
 import reengineering.ddd.accounting.description.basic.Amount;
 import reengineering.ddd.accounting.model.*;
 import reengineering.ddd.accounting.mybatis.associations.Customers;
+import reengineering.ddd.archtype.Many;
 
 import javax.inject.Inject;
 
 import java.time.LocalDateTime;
+import java.util.Iterator;
+import java.util.Optional;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -107,4 +110,50 @@ public class AssociationsTest {
         assertTrue(account.transactions().findByIdentity("-1").isEmpty());
     }
 
+    @Test
+    public void should_find_transactions_in_account() {
+        Account account = customer.accounts().findByIdentity(accountId).get();
+
+        Many<Transaction> transactions = account.transactions().findAll().subCollection(0, 100);
+        assertEquals(100, transactions.size());
+    }
+
+    @Test
+    public void should_iterate_over_all_transaction_in_account() {
+        Account account = customer.accounts().findByIdentity(accountId).get();
+
+        Iterator<Transaction> iterator = account.transactions().findAll().iterator();
+        int count = 0;
+        while (iterator.hasNext()) {
+            iterator.next();
+            count++;
+        }
+
+        assertEquals(5000, count);
+    }
+
+    @Test
+    public void should_get_source_evidences_of_customer() {
+        assertEquals(1000, customer.sourceEvidences().findAll().size());
+    }
+
+    @Test
+    public void should_find_source_evidences_of_customer() {
+        Many<SourceEvidence<?>> evidences = customer.sourceEvidences().findAll().subCollection(0, 100);
+        assertEquals(100, evidences.size());
+    }
+
+
+    @Test
+    public void should_find_source_evidence_of_customer() {
+        SourceEvidence<?> sourceEvidence = customer.sourceEvidences().findByIdentity("0").get();
+
+        assertEquals(5, sourceEvidence.transactions().findAll().size());
+    }
+
+    @Test
+    public void should_not_find_source_evidence_of_customer_if_not_exist() {
+        Optional<SourceEvidence<?>> sourceEvidence = customer.sourceEvidences().findByIdentity("-1");
+        assertTrue(sourceEvidence.isEmpty());
+    }
 }

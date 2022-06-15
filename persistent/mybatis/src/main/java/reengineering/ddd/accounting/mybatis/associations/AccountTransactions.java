@@ -18,13 +18,8 @@ public class AccountTransactions extends EntityList<String, Transaction> impleme
     private ModelMapper mapper;
 
     @Override
-    protected List<Transaction> findAllEntities() {
-        return mapper.findTransactionsByAccountId(accountId);
-    }
-
-    @Override
     protected List<Transaction> findEntities(int from, int to) {
-        return mapper.findTransactionsByAccountId(accountId);
+        return mapper.findTransactionsByAccountId(accountId, from, to - from);
     }
 
     @Override

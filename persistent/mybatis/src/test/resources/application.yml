@@ -12,5 +12,5 @@ mybatis:
     object-factory: reengineering.ddd.mybatis.support.InjectableObjectFactory
 logging:
   level:
-    root: debug
+    root: info
 

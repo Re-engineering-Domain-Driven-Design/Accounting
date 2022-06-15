@@ -15,11 +15,6 @@ public class SourceEvidenceTransactions extends EntityList<String, Transaction> 
     private ModelMapper mapper;
 
     @Override
-    protected List<Transaction> findAllEntities() {
-        return mapper.findTransactionsBySourceEvidenceId(sourceEvidenceId);
-    }
-
-    @Override
     protected List<Transaction> findEntities(int from, int to) {
         return mapper.findTransactionsBySourceEvidenceId(sourceEvidenceId);
     }

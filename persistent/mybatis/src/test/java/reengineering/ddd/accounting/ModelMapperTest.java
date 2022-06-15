@@ -77,7 +77,7 @@ public class ModelMapperTest {
 
     @Test
     public void should_read_sales_settlements_as_source_evidences() {
-        List<SourceEvidence<?>> evidences = mapper.findSourceEvidencesByCustomerId(customerId);
+        List<SourceEvidence<?>> evidences = mapper.findSourceEvidencesByCustomerId(customerId, 0, 100);
         assertEquals(1, evidences.size());
 
         SalesSettlement salesSettlement = (SalesSettlement) evidences.get(0);
@@ -110,7 +110,7 @@ public class ModelMapperTest {
 
     @Test
     public void should_find_transactions_by_account_id() {
-        List<Transaction> transactions = mapper.findTransactionsByAccountId(accountId);
+        List<Transaction> transactions = mapper.findTransactionsByAccountId(accountId, 0, 100);
 
         assertEquals(1, transactions.size());
         Transaction transaction = transactions.get(0);
@@ -155,7 +155,7 @@ public class ModelMapperTest {
 
     @Test
     public void should_find_transaction_from_source_evidences() {
-        SourceEvidence<?> evidence = mapper.findSourceEvidencesByCustomerId(customerId).get(0);
+        SourceEvidence<?> evidence = mapper.findSourceEvidencesByCustomerId(customerId, 0, 100).get(0);
 
         Many<Transaction> transactions = evidence.transactions().findAll();
 
