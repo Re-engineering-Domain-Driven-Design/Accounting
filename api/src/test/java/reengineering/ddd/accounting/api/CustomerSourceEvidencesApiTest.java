@@ -14,6 +14,7 @@ import reengineering.ddd.accounting.description.TransactionDescription;
 import reengineering.ddd.accounting.description.basic.Amount;
 import reengineering.ddd.accounting.description.basic.Currency;
 import reengineering.ddd.accounting.model.*;
+import reengineering.ddd.archtype.HasMany;
 
 import javax.ws.rs.core.HttpHeaders;
 import java.math.BigDecimal;
@@ -72,7 +73,7 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
     @Test
     public void should_return_source_evidence_matched_by_id() {
         SourceEvidence evidence = mock(SourceEvidence.class);
-        SourceEvidence.Transactions transactions = mock(SourceEvidence.Transactions.class);
+        HasMany<String,Transaction> transactions = mock(HasMany.class);
 
         when(evidence.getIdentity()).thenReturn("EV-001");
         when(evidence.getDescription()).thenReturn(new EvidenceDescription("ORD-001"));

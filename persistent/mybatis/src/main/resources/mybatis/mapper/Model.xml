@@ -51,7 +51,7 @@
     </resultMap>
 
     <resultMap id="sourceEvidenceTransactions"
-               type="reengineering.ddd.accounting.mybatis.associations.SourceEvidenceTransactions">
+               type="reengineering.ddd.mybatis.memory.EntityList">
         <id column="evidence_id"/>
         <collection property="list" resultMap="transaction"/>
     </resultMap>

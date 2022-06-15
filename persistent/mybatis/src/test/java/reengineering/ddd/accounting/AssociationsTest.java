@@ -1,6 +1,5 @@
 package reengineering.ddd.accounting;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -12,7 +11,6 @@ import reengineering.ddd.accounting.mybatis.associations.Customers;
 import reengineering.ddd.archtype.Many;
 
 import javax.inject.Inject;
-
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Optional;

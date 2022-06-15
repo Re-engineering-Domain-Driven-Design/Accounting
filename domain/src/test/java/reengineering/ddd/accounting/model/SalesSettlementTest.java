@@ -6,6 +6,7 @@ import reengineering.ddd.accounting.description.SalesSettlementDescription;
 import reengineering.ddd.accounting.description.TransactionDescription;
 import reengineering.ddd.accounting.description.basic.Amount;
 import reengineering.ddd.accounting.description.basic.Ref;
+import reengineering.ddd.archtype.HasMany;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class SalesSettlementTest {
                 Amount.cny("1000.00"), new Ref<>("CASH-001"),
                 new SalesSettlementDescription.Detail(Amount.cny("700.00")),
                 new SalesSettlementDescription.Detail(Amount.cny("300.00"))
-        ), Mockito.mock(SourceEvidence.Transactions.class));
+        ), Mockito.mock(HasMany.class));
 
         Map<String, List<TransactionDescription>> transactions = salesSettlement.toTransactions();
 

@@ -12,12 +12,12 @@ public class SalesSettlement implements SourceEvidence<SalesSettlementDescriptio
     private String identity;
     private SalesSettlementDescription description;
 
-    private Transactions transactions;
+    private HasMany<String, Transaction> transactions;
 
     public SalesSettlement() {
     }
 
-    public SalesSettlement(String identity, SalesSettlementDescription description, Transactions transactions) {
+    public SalesSettlement(String identity, SalesSettlementDescription description, HasMany<String, Transaction> transactions) {
         this.identity = identity;
         this.description = description;
         this.transactions = transactions;
