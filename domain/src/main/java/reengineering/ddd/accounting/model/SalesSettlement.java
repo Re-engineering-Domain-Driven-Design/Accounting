@@ -2,6 +2,7 @@ package reengineering.ddd.accounting.model;
 
 import reengineering.ddd.accounting.description.SalesSettlementDescription;
 import reengineering.ddd.accounting.description.TransactionDescription;
+import reengineering.ddd.archtype.HasMany;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,7 +34,7 @@ public class SalesSettlement implements SourceEvidence<SalesSettlementDescriptio
     }
 
     @Override
-    public Transactions transactions() {
+    public HasMany<String, Transaction> transactions() {
         return transactions;
     }
 
