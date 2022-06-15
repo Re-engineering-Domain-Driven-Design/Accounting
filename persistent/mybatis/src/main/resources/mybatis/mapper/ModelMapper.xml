@@ -19,6 +19,12 @@
         where customer_id = #{customer_id}
     </select>
 
+    <select id="findSourceEvidenceById" resultMap="model.sourceEvidence">
+        select id, customer_id, type
+        from source_evidences e
+        where id = #{id}
+    </select>
+
     <select id="findTransactionsByAccountId" resultMap="model.transaction">
         select t.id                 as id,
                t.account_id         as account_id,
@@ -57,7 +63,7 @@
         where t.source_evidence_id = #{source_evidence_id}
     </select>
 
-    <select id="findTransactionById" resultMap="model.transaction">
+    <select id="findTransactionByAccountAndId" resultMap="model.transaction">
         select t.id                 as id,
                t.account_id         as account_id,
                t.source_evidence_id as source_evidence_id,
@@ -73,7 +79,28 @@
         from transactions t
                  left outer join source_evidences s on s.id = t.source_evidence_id
                  left outer join accounts a on a.id = t.account_id
-        where t.id = #{transaction_id}
+        where t.id = #{id}
+          and t.account_id = #{account_id}
+    </select>
+
+    <select id="findTransactionByEvidenceAndId" resultMap="model.transaction">
+        select t.id                 as id,
+               t.account_id         as account_id,
+               t.source_evidence_id as source_evidence_id,
+               t.amount             as amount,
+               t.currency           as currency,
+               t.created_at         as created_at,
+               s.id                 as evidence_id,
+               s.customer_id        as evidence_customer_id,
+               s.type               as evidence_type,
+               a.id                 as account_id,
+               a.current_amount     as account_current_amount,
+               a.current_currency   as account_current_currency
+        from transactions t
+                 left outer join source_evidences s on s.id = t.source_evidence_id
+                 left outer join accounts a on a.id = t.account_id
+        where t.id = #{id}
+          and t.source_evidence_id = #{evidence_id}
     </select>
 
     <insert id="insertTransaction" useGeneratedKeys="true" keyProperty="holder.id" keyColumn="id"

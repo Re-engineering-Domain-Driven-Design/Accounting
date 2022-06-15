@@ -23,7 +23,7 @@ public class CustomerSourceEvidences implements Customer.SourceEvidences {
 
     @Override
     public Optional<SourceEvidence<?>> findByIdentity(String identifier) {
-        return Optional.empty();
+        return Optional.of(mapper.findSourceEvidenceById(identifier));
     }
 
     @Override

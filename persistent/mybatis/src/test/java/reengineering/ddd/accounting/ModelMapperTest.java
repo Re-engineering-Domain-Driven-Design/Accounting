@@ -75,11 +75,26 @@ public class ModelMapperTest {
     }
 
     @Test
-    public void should_read_sales_settlement_as_source_evidence() {
+    public void should_read_sales_settlements_as_source_evidences() {
         List<SourceEvidence<?>> evidences = mapper.findSourceEvidencesByCustomerId(customerId);
         assertEquals(1, evidences.size());
 
         SalesSettlement salesSettlement = (SalesSettlement) evidences.get(0);
+        assertEquals(evidenceId, salesSettlement.identity());
+        assertEquals(orderId, salesSettlement.description().getOrder().id());
+        assertEquals(accountId, salesSettlement.description().getAccount().id());
+        assertEquals(Amount.cny("100.00"), salesSettlement.description().getTotal());
+
+        assertEquals(1, salesSettlement.description().getDetails().size());
+
+        SalesSettlementDescription.Detail detail = salesSettlement.description().getDetails().get(0);
+        assertEquals(Amount.cny("100.00"), detail.getAmount());
+    }
+
+    @Test
+    public void should_read_sales_settlement_as_source_evidence() {
+        SalesSettlement salesSettlement = (SalesSettlement) mapper.findSourceEvidenceById(evidenceId);
+
         assertEquals(evidenceId, salesSettlement.identity());
         assertEquals(orderId, salesSettlement.description().getOrder().id());
         assertEquals(accountId, salesSettlement.description().getAccount().id());
@@ -147,8 +162,16 @@ public class ModelMapperTest {
     }
 
     @Test
-    public void should_find_account_transaction_by_transaction_id() {
-        Transaction transaction = mapper.findTransactionById(transactionId);
+    public void should_find_account_transaction_by_account_and_transaction_id() {
+        Transaction transaction = mapper.findTransactionByAccountAndId(accountId, transactionId);
+        assertEquals(transactionId, transaction.identity());
+        assertEquals(Amount.cny("100.00"), transaction.description().amount());
+        assertEquals(createdAt, transaction.description().createdAt());
+    }
+
+    @Test
+    public void should_find_account_transaction_by_evidence_transaction_id() {
+        Transaction transaction = mapper.findTransactionByEvidenceAndId(evidenceId, transactionId);
         assertEquals(transactionId, transaction.identity());
         assertEquals(Amount.cny("100.00"), transaction.description().amount());
         assertEquals(createdAt, transaction.description().createdAt());
@@ -160,7 +183,7 @@ public class ModelMapperTest {
         LocalDateTime created = LocalDateTime.now();
         mapper.insertTransaction(holder, accountId, evidenceId, new TransactionDescription(Amount.cny("400.00"), created));
 
-        Transaction transaction = mapper.findTransactionById(holder.id());
+        Transaction transaction = mapper.findTransactionByAccountAndId(accountId, holder.id());
         assertEquals(Amount.cny("400.00"), transaction.description().amount());
         assertEquals(created, transaction.description().createdAt());
     }

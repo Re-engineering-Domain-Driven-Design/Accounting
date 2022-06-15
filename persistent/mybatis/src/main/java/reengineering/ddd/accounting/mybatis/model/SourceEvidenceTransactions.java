@@ -22,6 +22,6 @@ public class SourceEvidenceTransactions implements SourceEvidence.Transactions {
 
     @Override
     public Optional<Transaction> findByIdentity(String identifier) {
-        return Optional.empty();
+        return Optional.of(mapper.findTransactionByEvidenceAndId(sourceEvidenceId, identifier));
     }
 }

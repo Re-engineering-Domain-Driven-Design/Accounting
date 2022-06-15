@@ -25,13 +25,13 @@ public class AccountTransactions implements Account.Transactions {
 
     @Override
     public Optional<Transaction> findByIdentity(String identifier) {
-        return Optional.of(mapper.findTransactionById(identifier));
+        return Optional.of(mapper.findTransactionByAccountAndId(accountId, identifier));
     }
 
     @Override
     public Transaction add(Account account, SourceEvidence<?> evidence, TransactionDescription description) {
         IdHolder holder = new IdHolder();
         mapper.insertTransaction(holder, account.identity(), evidence.identity(), description);
-        return mapper.findTransactionById(holder.id());
+        return mapper.findTransactionByAccountAndId(accountId, holder.id());
     }
 }

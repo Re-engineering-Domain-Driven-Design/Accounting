@@ -16,11 +16,15 @@ public interface ModelMapper {
 
     List<SourceEvidence<?>> findSourceEvidencesByCustomerId(String customerId);
 
+    SourceEvidence<?> findSourceEvidenceById(String id);
+
     List<Transaction> findTransactionsByAccountId(String accountId);
 
     List<Transaction> findTransactionsBySourceEvidenceId(String evidenceId);
 
-    Transaction findTransactionById(String transactionId);
+    Transaction findTransactionByAccountAndId(@Param("account_id") String accountId, @Param("id") String transactionId);
+
+    Transaction findTransactionByEvidenceAndId(@Param("evidence_id") String evidenceId, @Param("id") String transactionId);
 
     void insertTransaction(@Param("holder") IdHolder id,
                            @Param("account_id") String accountId,
