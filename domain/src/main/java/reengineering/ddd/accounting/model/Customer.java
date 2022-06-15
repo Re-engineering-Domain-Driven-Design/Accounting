@@ -1,11 +1,10 @@
 package reengineering.ddd.accounting.model;
 
 import reengineering.ddd.accounting.description.CustomerDescription;
-import reengineering.ddd.accounting.description.SalesSettlementDescription;
 import reengineering.ddd.accounting.description.SourceEvidenceDescription;
 import reengineering.ddd.accounting.description.TransactionDescription;
-import reengineering.ddd.archtype.HasMany;
 import reengineering.ddd.archtype.Entity;
+import reengineering.ddd.archtype.HasMany;
 
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,7 @@ public class Customer implements Entity<String, CustomerDescription> {
         return description;
     }
 
-    public SourceEvidences sourceEvidences() {
+    public HasMany<String, SourceEvidence<?>> sourceEvidences() {
         return sourceEvidences;
     }
 

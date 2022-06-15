@@ -42,7 +42,7 @@ public class SourceEvidencesApi {
 
     @POST
     public Response create(String json, @Context UriInfo info) {
-        SourceEvidence evidence = customer.sourceEvidences().add(reader.read(json)
+        SourceEvidence evidence = customer.add(reader.read(json)
                 .orElseThrow(() -> new WebApplicationException(Response.Status.NOT_ACCEPTABLE)).description());
         return Response.created(ApiTemplates.sourceEvidence(info).build(customer.identity(), evidence.identity())).build();
     }
