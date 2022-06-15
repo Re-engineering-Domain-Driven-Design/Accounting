@@ -4,10 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import reengineering.ddd.accounting.description.SalesSettlementDescription;
+import reengineering.ddd.accounting.description.TransactionDescription;
 import reengineering.ddd.accounting.description.basic.Amount;
 import reengineering.ddd.accounting.model.*;
 import reengineering.ddd.accounting.mybatis.ModelMapper;
 import reengineering.ddd.archtype.Many;
+import reengineering.ddd.mybatis.support.IdHolder;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
@@ -144,4 +146,22 @@ public class ModelMapperTest {
         assertEquals(transactionId, transactions.stream().toList().get(0).identity());
     }
 
+    @Test
+    public void should_find_account_transaction_by_transaction_id() {
+        Transaction transaction = mapper.findTransactionById(transactionId);
+        assertEquals(transactionId, transaction.identity());
+        assertEquals(Amount.cny("100.00"), transaction.description().amount());
+        assertEquals(createdAt, transaction.description().createdAt());
+    }
+
+    @Test
+    public void should_add_transaction_to_database() {
+        IdHolder holder = new IdHolder();
+        LocalDateTime created = LocalDateTime.now();
+        mapper.insertTransaction(holder, accountId, evidenceId, new TransactionDescription(Amount.cny("400.00"), created));
+
+        Transaction transaction = mapper.findTransactionById(holder.id());
+        assertEquals(Amount.cny("400.00"), transaction.description().amount());
+        assertEquals(created, transaction.description().createdAt());
+    }
 }
