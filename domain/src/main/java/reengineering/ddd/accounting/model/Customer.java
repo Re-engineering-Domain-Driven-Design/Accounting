@@ -1,9 +1,14 @@
 package reengineering.ddd.accounting.model;
 
 import reengineering.ddd.accounting.description.CustomerDescription;
+import reengineering.ddd.accounting.description.SalesSettlementDescription;
 import reengineering.ddd.accounting.description.SourceEvidenceDescription;
+import reengineering.ddd.accounting.description.TransactionDescription;
 import reengineering.ddd.archtype.HasMany;
 import reengineering.ddd.archtype.Entity;
+
+import java.util.List;
+import java.util.Map;
 
 public class Customer implements Entity<String, CustomerDescription> {
     private String identity;
@@ -36,8 +41,18 @@ public class Customer implements Entity<String, CustomerDescription> {
         return sourceEvidences;
     }
 
-    public Accounts accounts() {
+    public HasMany<String, Account> accounts() {
         return accounts;
+    }
+
+    public SourceEvidence<?> add(SourceEvidenceDescription description) {
+        SourceEvidence<?> evidence = sourceEvidences.add(description);
+        Map<String, List<TransactionDescription>> transactions = evidence.toTransactions();
+        for (String accountId : transactions.keySet()) {
+            Account account = accounts.findByIdentity(accountId).orElseThrow(() -> new AccountNotFoundException(accountId));
+            transactions.get(accountId).forEach(account.transactions()::add);
+        }
+        return evidence;
     }
 
     public interface SourceEvidences extends HasMany<String, SourceEvidence<?>> {

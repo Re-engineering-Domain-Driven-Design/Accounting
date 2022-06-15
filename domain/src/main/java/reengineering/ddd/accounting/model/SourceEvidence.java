@@ -13,7 +13,7 @@ public interface SourceEvidence<Description extends SourceEvidenceDescription> e
     interface Transactions extends HasMany<String, Transaction> {
     }
 
-    Transactions transactions();
+    HasMany<String, Transaction> transactions();
 
     Map<String, List<TransactionDescription>> toTransactions();
 }

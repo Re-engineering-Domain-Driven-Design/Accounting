@@ -35,7 +35,6 @@ public class Account implements Entity<String, AccountDescription> {
     }
 
     public interface Transactions extends HasMany<String, Transaction> {
-
         Transaction add(TransactionDescription description);
     }
 }

@@ -1,3 +1,7 @@
 plugins {
     id 'reengineering.ddd'
 }
+
+dependencies {
+    testImplementation 'org.mockito:mockito-core:4.6.1'
+}
