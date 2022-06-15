@@ -28,11 +28,11 @@ public class SourceEvidenceReaderTest {
 
         SalesSettlementDescription description = (SalesSettlementDescription) request.description();
 
-        assertEquals(new Ref<>("ORD-001"), description.getOrder());
-        assertEquals(new Amount(new BigDecimal("1000.00"), Currency.CNY), description.getTotal());
-        assertEquals(new Ref<>("CASH-001"), description.getAccount());
+        assertEquals(new Ref<>("ORD-001"), description.order());
+        assertEquals(new Amount(new BigDecimal("1000.00"), Currency.CNY), description.total());
+        assertEquals(new Ref<>("CASH-001"), description.account());
 
-        List<SalesSettlementDescription.Detail> details = description.getDetails();
+        List<SalesSettlementDescription.Detail> details = description.details();
         assertEquals(1, details.size());
         assertEquals(new Amount(new BigDecimal("1000.00"), Currency.CNY), details.get(0).getAmount());
     }

@@ -24,34 +24,22 @@ public class SalesSettlementDescription implements SourceEvidenceDescription {
         this.details = List.of(details);
     }
 
-    public Ref<String> getOrder() {
+    public Ref<String> order() {
         return order;
     }
 
-    public Amount getTotal() {
+    public Amount total() {
         return total;
     }
 
-    public Ref<String> getAccount() {
+    public Ref<String> account() {
         return account;
     }
 
-    public List<Detail> getDetails() {
+    public List<Detail> details() {
         return details;
     }
 
-    public static class Detail {
-        private Amount amount;
-
-        public Detail(Amount amount) {
-            this.amount = amount;
-        }
-
-        private Detail() {
-        }
-
-        public Amount getAmount() {
-            return amount;
-        }
+    public record Detail(Amount amount) {
     }
 }

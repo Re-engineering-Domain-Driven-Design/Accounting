@@ -79,13 +79,13 @@ public class ModelMapperTest {
 
         SalesSettlement salesSettlement = (SalesSettlement) evidences.get(0);
         assertEquals(evidenceId, salesSettlement.identity());
-        assertEquals(orderId, salesSettlement.description().getOrder().id());
-        assertEquals(accountId, salesSettlement.description().getAccount().id());
-        assertEquals(Amount.cny("100.00"), salesSettlement.description().getTotal());
+        assertEquals(orderId, salesSettlement.description().order().id());
+        assertEquals(accountId, salesSettlement.description().account().id());
+        assertEquals(Amount.cny("100.00"), salesSettlement.description().total());
 
-        assertEquals(1, salesSettlement.description().getDetails().size());
+        assertEquals(1, salesSettlement.description().details().size());
 
-        SalesSettlementDescription.Detail detail = salesSettlement.description().getDetails().get(0);
+        SalesSettlementDescription.Detail detail = salesSettlement.description().details().get(0);
         assertEquals(Amount.cny("100.00"), detail.getAmount());
     }
 

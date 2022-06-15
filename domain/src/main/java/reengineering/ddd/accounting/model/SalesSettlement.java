@@ -3,6 +3,7 @@ package reengineering.ddd.accounting.model;
 import reengineering.ddd.accounting.description.SalesSettlementDescription;
 import reengineering.ddd.accounting.description.TransactionDescription;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,7 @@ public class SalesSettlement implements SourceEvidence<SalesSettlementDescriptio
 
     @Override
     public Map<String, List<TransactionDescription>> toTransactions() {
-        return null;
+        return Map.of(description.account().id(),
+                description.details().stream().map(detail -> new TransactionDescription(detail.amount(), LocalDateTime.now())).toList());
     }
 }
