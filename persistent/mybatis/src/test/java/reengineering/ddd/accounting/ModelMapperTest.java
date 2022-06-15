@@ -96,7 +96,6 @@ public class ModelMapperTest {
     public void should_read_sales_settlement_as_source_evidence() {
         SalesSettlement salesSettlement = (SalesSettlement) mapper.findSourceEvidenceByCustomerAndId(customerId, evidenceId);
 
-
         assertEquals(evidenceId, salesSettlement.getIdentity());
         assertEquals(orderId, salesSettlement.getDescription().getOrder().id());
         assertEquals(accountId, salesSettlement.getDescription().getAccount().id());

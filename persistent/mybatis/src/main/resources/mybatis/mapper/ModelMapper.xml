@@ -14,17 +14,17 @@
     </select>
 
     <select id="findSourceEvidencesByCustomerId" resultMap="model.sourceEvidence">
-        select id, customer_id, type
+        select e.id as evidence_id, e.customer_id as evidence_customer_id, e.type as evidence_type
         from source_evidences e
-        where customer_id = #{customer_id}
-        limit #{from}, #{size}
+        where e.customer_id = #{customer_id} limit #{from}
+            , #{size}
     </select>
 
     <select id="findSourceEvidenceByCustomerAndId" resultMap="model.sourceEvidence">
-        select id, customer_id, type
+        select e.id as evidence_id, e.customer_id as evidence_customer_id, e.type as evidence_type
         from source_evidences e
-        where id = #{id}
-          and customer_id = #{customer_id}
+        where e.id = #{id}
+          and e.customer_id = #{customer_id}
     </select>
 
     <select id="findTransactionsByAccountId" resultMap="model.transaction">

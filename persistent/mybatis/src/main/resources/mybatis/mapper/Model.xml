@@ -24,14 +24,14 @@
     </resultMap>
 
     <resultMap id="sourceEvidence" type="reengineering.ddd.accounting.model.SourceEvidence">
-        <discriminator javaType="String" column="type">
+        <discriminator javaType="String" column="evidence_type">
             <case value="sales-settlement" resultMap="salesSettlement"/>
         </discriminator>
     </resultMap>
 
     <resultMap id="salesSettlement" type="reengineering.ddd.accounting.model.SalesSettlement">
-        <id property="identity" column="id" jdbcType="BIGINT" javaType="String"/>
-        <association property="description" column="id" select="loadSalesSettlement" fetchType="lazy"/>
+        <id property="identity" column="evidence_id" jdbcType="BIGINT" javaType="String"/>
+        <association property="description" column="evidence_id" select="loadSalesSettlement" fetchType="lazy"/>
         <association property="transactions" resultMap="sourceEvidenceTransactions"/>
     </resultMap>
 
@@ -39,7 +39,7 @@
         <id property="identity" column="id" jdbcType="BIGINT" javaType="String"/>
         <association property="description" resultMap="description.transaction"/>
         <association property="sourceEvidence" javaType="reengineering.ddd.mybatis.memory.Reference">
-            <association property="entity" resultMap="sourceEvidence" columnPrefix="evidence_"/>
+            <association property="entity" resultMap="sourceEvidence" />
         </association>
         <association property="account" javaType="reengineering.ddd.mybatis.memory.Reference">
             <association property="entity" resultMap="account"/>
@@ -52,7 +52,7 @@
 
     <resultMap id="sourceEvidenceTransactions"
                type="reengineering.ddd.accounting.mybatis.associations.SourceEvidenceTransactions">
-        <result column="id" property="sourceEvidenceId" javaType="String"/>
+        <result column="evidence_id" property="sourceEvidenceId" javaType="String"/>
     </resultMap>
 
 
