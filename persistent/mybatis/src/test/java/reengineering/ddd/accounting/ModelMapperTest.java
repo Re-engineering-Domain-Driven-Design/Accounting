@@ -94,7 +94,7 @@ public class ModelMapperTest {
 
     @Test
     public void should_read_sales_settlement_as_source_evidence() {
-        SalesSettlement salesSettlement = (SalesSettlement) mapper.findSourceEvidenceById(evidenceId);
+        SalesSettlement salesSettlement = (SalesSettlement) mapper.findSourceEvidenceByCustomerAndId(customerId, evidenceId);
 
         assertEquals(evidenceId, salesSettlement.identity());
         assertEquals(orderId, salesSettlement.description().getOrder().id());
@@ -198,7 +198,7 @@ public class ModelMapperTest {
         mapper.insertSourceEvidence(holder, customerId, description);
         mapper.insertSourceEvidenceDescription(holder.id(), description);
 
-        SalesSettlement evidence = (SalesSettlement) mapper.findSourceEvidenceById(holder.id());
+        SalesSettlement evidence = (SalesSettlement) mapper.findSourceEvidenceByCustomerAndId(customerId, holder.id());
         assertEquals(Amount.cny("1000.00"), evidence.description().getTotal());
 
         assertEquals(1, evidence.description().getDetails().size());

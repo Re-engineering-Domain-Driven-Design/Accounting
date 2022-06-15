@@ -24,7 +24,7 @@ public class CustomerSourceEvidences implements Customer.SourceEvidences {
 
     @Override
     public Optional<SourceEvidence<?>> findByIdentity(String identifier) {
-        return Optional.of(mapper.findSourceEvidenceById(identifier));
+        return Optional.of(mapper.findSourceEvidenceByCustomerAndId(customerId, identifier));
     }
 
     @Override
@@ -32,6 +32,6 @@ public class CustomerSourceEvidences implements Customer.SourceEvidences {
         IdHolder holder = new IdHolder();
         mapper.insertSourceEvidence(holder, customerId, description);
         mapper.insertSourceEvidenceDescription(holder.id(), description);
-        return mapper.findSourceEvidenceById(holder.id());
+        return mapper.findSourceEvidenceByCustomerAndId(customerId, holder.id());
     }
 }

@@ -19,10 +19,11 @@
         where customer_id = #{customer_id}
     </select>
 
-    <select id="findSourceEvidenceById" resultMap="model.sourceEvidence">
+    <select id="findSourceEvidenceByCustomerAndId" resultMap="model.sourceEvidence">
         select id, customer_id, type
         from source_evidences e
         where id = #{id}
+          and customer_id = #{customer_id}
     </select>
 
     <select id="findTransactionsByAccountId" resultMap="model.transaction">

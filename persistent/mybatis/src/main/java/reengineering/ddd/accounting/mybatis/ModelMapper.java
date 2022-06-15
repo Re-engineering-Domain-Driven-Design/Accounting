@@ -2,7 +2,6 @@ package reengineering.ddd.accounting.mybatis;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import reengineering.ddd.accounting.description.SalesSettlementDescription;
 import reengineering.ddd.accounting.description.SourceEvidenceDescription;
 import reengineering.ddd.accounting.description.TransactionDescription;
 import reengineering.ddd.accounting.model.Customer;
@@ -18,7 +17,7 @@ public interface ModelMapper {
 
     List<SourceEvidence<?>> findSourceEvidencesByCustomerId(String customerId);
 
-    SourceEvidence<?> findSourceEvidenceById(String id);
+    SourceEvidence<?> findSourceEvidenceByCustomerAndId(@Param("customer_id") String customerId, @Param("id") String id);
 
     List<Transaction> findTransactionsByAccountId(String accountId);
 
