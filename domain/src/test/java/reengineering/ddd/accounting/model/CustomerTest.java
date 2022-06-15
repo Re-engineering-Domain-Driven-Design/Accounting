@@ -58,8 +58,8 @@ public class CustomerTest {
         assertEquals(2, cash1Tx.descriptions.size());
         assertEquals(2, cash2Tx.descriptions.size());
 
-        assertEquals(Amount.cny("3000.00"), cash01.description().current());
-        assertEquals(Amount.cny("7000.00"), cash02.description().current());
+        assertEquals(Amount.cny("3000.00"), cash01.getDescription().current());
+        assertEquals(Amount.cny("7000.00"), cash02.getDescription().current());
 
         verify(accounts, times(1)).update(eq(cash01), eq(new Account.AccountChange(Amount.cny("3000.00"))));
         verify(accounts, times(1)).update(eq(cash02), eq(new Account.AccountChange(Amount.cny("7000.00"))));

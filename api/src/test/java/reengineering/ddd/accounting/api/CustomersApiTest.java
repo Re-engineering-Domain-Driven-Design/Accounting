@@ -33,14 +33,14 @@ public class CustomersApiTest extends ApiTest {
                 new CustomerDescription("John Smith", "john.smith@email.com"),
                 mock(Customer.SourceEvidences.class),
                 mock(Customer.Accounts.class));
-        when(customers.findById(eq(customer.identity()))).thenReturn(Optional.of(customer));
+        when(customers.findById(eq(customer.getIdentity()))).thenReturn(Optional.of(customer));
 
         given().accept(MediaTypes.HAL_JSON.toString())
-                .when().get("/customers/" + customer.identity())
+                .when().get("/customers/" + customer.getIdentity())
                 .then().statusCode(200)
-                .body("id", is(customer.identity()))
-                .body("name", is(customer.description().name()))
-                .body("email", is(customer.description().email()))
-                .body("_links.self.href", is("/api/customers/" + customer.identity()));
+                .body("id", is(customer.getIdentity()))
+                .body("name", is(customer.getDescription().name()))
+                .body("email", is(customer.getDescription().email()))
+                .body("_links.self.href", is("/api/customers/" + customer.getIdentity()));
     }
 }

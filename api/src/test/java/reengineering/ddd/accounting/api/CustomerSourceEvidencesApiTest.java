@@ -40,24 +40,24 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
     @BeforeEach
     public void before() {
         customer = new Customer("john.smith", new CustomerDescription("John Smith", "john.smith@email.com"), sourceEvidences, mock(Customer.Accounts.class));
-        when(customers.findById(eq(customer.identity()))).thenReturn(Optional.of(customer));
+        when(customers.findById(eq(customer.getIdentity()))).thenReturn(Optional.of(customer));
     }
 
     @Test
     public void should_return_all_source_evidences_with_only_links() {
         SourceEvidence evidence = mock(SourceEvidence.class);
-        when(evidence.identity()).thenReturn("EV-001");
-        when(evidence.description()).thenThrow(new NullPointerException());
+        when(evidence.getIdentity()).thenReturn("EV-001");
+        when(evidence.getDescription()).thenThrow(new NullPointerException());
 
         when(sourceEvidences.findAll()).thenReturn(new EntityList<>(evidence));
 
         given().accept(MediaTypes.HAL_JSON.toString())
-                .when().get("/customers/" + customer.identity() + "/source-evidences")
+                .when().get("/customers/" + customer.getIdentity() + "/source-evidences")
                 .then().statusCode(200)
-                .body("_links.self.href", is("/api/customers/" + customer.identity() + "/source-evidences"))
+                .body("_links.self.href", is("/api/customers/" + customer.getIdentity() + "/source-evidences"))
                 .body("_embedded.evidences.size()", is(1))
                 .body("_embedded.evidences[0].id", is("EV-001"))
-                .body("_embedded.evidences[0]._links.self.href", is("/api/customers/" + customer.identity() + "/source-evidences/EV-001"));
+                .body("_embedded.evidences[0]._links.self.href", is("/api/customers/" + customer.getIdentity() + "/source-evidences/EV-001"));
     }
 
     @Test
@@ -65,7 +65,7 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
         when(sourceEvidences.findByIdentity("EV-001")).thenReturn(Optional.empty());
 
         given().accept(MediaTypes.HAL_JSON.toString())
-                .when().get("/customers/" + customer.identity() + "/source-evidences/EV-001")
+                .when().get("/customers/" + customer.getIdentity() + "/source-evidences/EV-001")
                 .then().statusCode(404);
     }
 
@@ -74,8 +74,8 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
         SourceEvidence evidence = mock(SourceEvidence.class);
         SourceEvidence.Transactions transactions = mock(SourceEvidence.Transactions.class);
 
-        when(evidence.identity()).thenReturn("EV-001");
-        when(evidence.description()).thenReturn(new EvidenceDescription("ORD-001"));
+        when(evidence.getIdentity()).thenReturn("EV-001");
+        when(evidence.getDescription()).thenReturn(new EvidenceDescription("ORD-001"));
         when(evidence.transactions()).thenReturn(transactions);
 
         Account.Transactions accountTransactions = mock(Account.Transactions.class);
@@ -88,7 +88,7 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
         when(sourceEvidences.findByIdentity("EV-001")).thenReturn(Optional.of(evidence));
 
         given().accept(MediaTypes.HAL_JSON.toString())
-                .when().get("/customers/" + customer.identity() + "/source-evidences/EV-001")
+                .when().get("/customers/" + customer.getIdentity() + "/source-evidences/EV-001")
                 .then().statusCode(200)
                 .body("id", is("EV-001"))
                 .body("orderId", is("ORD-001"))
@@ -96,7 +96,7 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
                 .body("transactions[0].id", is("TX-01"))
                 .body("transactions[0].amount.value", is(1000))
                 .body("transactions[0].amount.currency", is("CNY"))
-                .body("_links.self.href", is("/api/customers/" + customer.identity() + "/source-evidences/EV-001"));
+                .body("_links.self.href", is("/api/customers/" + customer.getIdentity() + "/source-evidences/EV-001"));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
         when(reader.read(eq(unsupported))).thenReturn(Optional.empty());
         given().accept(MediaTypes.HAL_JSON.toString())
                 .body(unsupported)
-                .when().post("/customers/" + customer.identity() + "/source-evidences")
+                .when().post("/customers/" + customer.getIdentity() + "/source-evidences")
                 .then().statusCode(406);
     }
 
@@ -118,15 +118,15 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
         SourceEvidence evidence = mock(SourceEvidence.class);
 
         when(request.description()).thenReturn(description);
-        when(evidence.identity()).thenReturn("EV-001");
+        when(evidence.getIdentity()).thenReturn("EV-001");
         when(sourceEvidences.add(same(description))).thenReturn(evidence);
 
         when(reader.read(eq(supported))).thenReturn(Optional.of(request));
         given().accept(MediaTypes.HAL_JSON.toString())
                 .body(supported)
-                .when().post("/customers/" + customer.identity() + "/source-evidences")
+                .when().post("/customers/" + customer.getIdentity() + "/source-evidences")
                 .then().statusCode(201)
-                .header(HttpHeaders.LOCATION, is(uri("/api/customers/" + customer.identity() + "/source-evidences/EV-001")));
+                .header(HttpHeaders.LOCATION, is(uri("/api/customers/" + customer.getIdentity() + "/source-evidences/EV-001")));
     }
 
     record EvidenceDescription(String orderId) implements SourceEvidenceDescription {

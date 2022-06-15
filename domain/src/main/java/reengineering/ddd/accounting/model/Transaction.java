@@ -24,12 +24,12 @@ public class Transaction implements Entity<String, TransactionDescription> {
     }
 
     @Override
-    public String identity() {
+    public String getIdentity() {
         return identity;
     }
 
     @Override
-    public TransactionDescription description() {
+    public TransactionDescription getDescription() {
         return description;
     }
 

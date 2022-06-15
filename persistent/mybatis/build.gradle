@@ -10,6 +10,7 @@ dependencies {
     implementation 'javax.inject:javax.inject:1'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
     implementation 'org.flywaydb:flyway-core'
+    implementation 'javassist:javassist:3.12.1.GA'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.2.2'

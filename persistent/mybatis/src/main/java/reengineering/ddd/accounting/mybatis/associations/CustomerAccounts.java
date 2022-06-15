@@ -1,4 +1,4 @@
-package reengineering.ddd.accounting.mybatis.model;
+package reengineering.ddd.accounting.mybatis.associations;
 
 import reengineering.ddd.accounting.model.Account;
 import reengineering.ddd.accounting.model.Customer;
@@ -12,6 +12,6 @@ public class CustomerAccounts extends EntityList<String, Account> implements Cus
 
     @Override
     public void update(Account account, Account.AccountChange change) {
-        mapper.updateAccount(customerId, account.identity(), change);
+        mapper.updateAccount(customerId, account.getIdentity(), change);
     }
 }

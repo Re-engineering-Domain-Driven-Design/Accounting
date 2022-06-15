@@ -15,7 +15,6 @@ import reengineering.ddd.mybatis.support.IdHolder;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,7 +42,7 @@ public class ModelMapperTest {
     @BeforeEach
     public void before() {
         testData.insertCustomer(customerId, "John Smith", "john.smith@email.com");
-        testData.insertAccounts(accountId, customerId, 100.00, "CNY");
+        testData.insertAccount(accountId, customerId, 100.00, "CNY");
         testData.insertTransaction(transactionId, accountId, evidenceId, 100.00, "CNY", createdAt);
         testData.insertSourceEvidence(evidenceId, customerId, "sales-settlement");
         testData.insertSalesSettlement(evidenceId, orderId, accountId, 100.00, "CNY");
@@ -53,9 +52,9 @@ public class ModelMapperTest {
     @Test
     public void should_find_customer_by_id() {
         Customer customer = mapper.findCustomerById(customerId);
-        assertEquals(customerId, customer.identity());
-        assertEquals("John Smith", customer.description().name());
-        assertEquals("john.smith@email.com", customer.description().email());
+        assertEquals(customerId, customer.getIdentity());
+        assertEquals("John Smith", customer.getDescription().name());
+        assertEquals("john.smith@email.com", customer.getDescription().email());
     }
 
     @Test
@@ -73,7 +72,7 @@ public class ModelMapperTest {
         assertEquals(1, customer.accounts().findAll().size());
 
         Account customerAccount = customer.accounts().findByIdentity(accountId).get();
-        assertEquals(Amount.cny("100.00"), customerAccount.description().current());
+        assertEquals(Amount.cny("100.00"), customerAccount.getDescription().current());
     }
 
     @Test
@@ -82,14 +81,14 @@ public class ModelMapperTest {
         assertEquals(1, evidences.size());
 
         SalesSettlement salesSettlement = (SalesSettlement) evidences.get(0);
-        assertEquals(evidenceId, salesSettlement.identity());
-        assertEquals(orderId, salesSettlement.description().getOrder().id());
-        assertEquals(accountId, salesSettlement.description().getAccount().id());
-        assertEquals(Amount.cny("100.00"), salesSettlement.description().getTotal());
+        assertEquals(evidenceId, salesSettlement.getIdentity());
+        assertEquals(orderId, salesSettlement.getDescription().getOrder().id());
+        assertEquals(accountId, salesSettlement.getDescription().getAccount().id());
+        assertEquals(Amount.cny("100.00"), salesSettlement.getDescription().getTotal());
 
-        assertEquals(1, salesSettlement.description().getDetails().size());
+        assertEquals(1, salesSettlement.getDescription().getDetails().size());
 
-        SalesSettlementDescription.Detail detail = salesSettlement.description().getDetails().get(0);
+        SalesSettlementDescription.Detail detail = salesSettlement.getDescription().getDetails().get(0);
         assertEquals(Amount.cny("100.00"), detail.getAmount());
     }
 
@@ -97,14 +96,15 @@ public class ModelMapperTest {
     public void should_read_sales_settlement_as_source_evidence() {
         SalesSettlement salesSettlement = (SalesSettlement) mapper.findSourceEvidenceByCustomerAndId(customerId, evidenceId);
 
-        assertEquals(evidenceId, salesSettlement.identity());
-        assertEquals(orderId, salesSettlement.description().getOrder().id());
-        assertEquals(accountId, salesSettlement.description().getAccount().id());
-        assertEquals(Amount.cny("100.00"), salesSettlement.description().getTotal());
 
-        assertEquals(1, salesSettlement.description().getDetails().size());
+        assertEquals(evidenceId, salesSettlement.getIdentity());
+        assertEquals(orderId, salesSettlement.getDescription().getOrder().id());
+        assertEquals(accountId, salesSettlement.getDescription().getAccount().id());
+        assertEquals(Amount.cny("100.00"), salesSettlement.getDescription().getTotal());
 
-        SalesSettlementDescription.Detail detail = salesSettlement.description().getDetails().get(0);
+        assertEquals(1, salesSettlement.getDescription().getDetails().size());
+
+        SalesSettlementDescription.Detail detail = salesSettlement.getDescription().getDetails().get(0);
         assertEquals(Amount.cny("100.00"), detail.getAmount());
     }
 
@@ -115,14 +115,14 @@ public class ModelMapperTest {
         assertEquals(1, transactions.size());
         Transaction transaction = transactions.get(0);
 
-        assertEquals(Amount.cny("100.00"), transaction.description().amount());
-        assertEquals(createdAt, transaction.description().createdAt());
+        assertEquals(Amount.cny("100.00"), transaction.getDescription().amount());
+        assertEquals(createdAt, transaction.getDescription().createdAt());
 
         SourceEvidence evidence = transaction.sourceEvidence();
-        assertEquals(evidenceId, evidence.identity());
+        assertEquals(evidenceId, evidence.getIdentity());
         assertTrue(evidence instanceof SalesSettlement);
 
-        assertEquals(accountId, transaction.account().identity());
+        assertEquals(accountId, transaction.account().getIdentity());
     }
 
     @Test
@@ -132,14 +132,14 @@ public class ModelMapperTest {
         assertEquals(1, transactions.size());
         Transaction transaction = transactions.get(0);
 
-        assertEquals(Amount.cny("100.00"), transaction.description().amount());
-        assertEquals(createdAt, transaction.description().createdAt());
+        assertEquals(Amount.cny("100.00"), transaction.getDescription().amount());
+        assertEquals(createdAt, transaction.getDescription().createdAt());
 
         SourceEvidence evidence = transaction.sourceEvidence();
-        assertEquals(evidenceId, evidence.identity());
+        assertEquals(evidenceId, evidence.getIdentity());
         assertTrue(evidence instanceof SalesSettlement);
 
-        assertEquals(accountId, transaction.account().identity());
+        assertEquals(accountId, transaction.account().getIdentity());
     }
 
     @Test
@@ -150,7 +150,7 @@ public class ModelMapperTest {
         Many<Transaction> transactions = account.transactions().findAll();
 
         assertEquals(1, transactions.size());
-        assertEquals(transactionId, transactions.stream().toList().get(0).identity());
+        assertEquals(transactionId, transactions.stream().toList().get(0).getIdentity());
     }
 
     @Test
@@ -160,23 +160,23 @@ public class ModelMapperTest {
         Many<Transaction> transactions = evidence.transactions().findAll();
 
         assertEquals(1, transactions.size());
-        assertEquals(transactionId, transactions.stream().toList().get(0).identity());
+        assertEquals(transactionId, transactions.stream().toList().get(0).getIdentity());
     }
 
     @Test
     public void should_find_account_transaction_by_account_and_transaction_id() {
         Transaction transaction = mapper.findTransactionByAccountAndId(accountId, transactionId);
-        assertEquals(transactionId, transaction.identity());
-        assertEquals(Amount.cny("100.00"), transaction.description().amount());
-        assertEquals(createdAt, transaction.description().createdAt());
+        assertEquals(transactionId, transaction.getIdentity());
+        assertEquals(Amount.cny("100.00"), transaction.getDescription().amount());
+        assertEquals(createdAt, transaction.getDescription().createdAt());
     }
 
     @Test
     public void should_find_account_transaction_by_evidence_transaction_id() {
         Transaction transaction = mapper.findTransactionByEvidenceAndId(evidenceId, transactionId);
-        assertEquals(transactionId, transaction.identity());
-        assertEquals(Amount.cny("100.00"), transaction.description().amount());
-        assertEquals(createdAt, transaction.description().createdAt());
+        assertEquals(transactionId, transaction.getIdentity());
+        assertEquals(Amount.cny("100.00"), transaction.getDescription().amount());
+        assertEquals(createdAt, transaction.getDescription().createdAt());
     }
 
     @Test
@@ -186,8 +186,8 @@ public class ModelMapperTest {
         mapper.insertTransaction(holder, accountId, evidenceId, new TransactionDescription(Amount.cny("400.00"), created));
 
         Transaction transaction = mapper.findTransactionByAccountAndId(accountId, holder.id());
-        assertEquals(Amount.cny("400.00"), transaction.description().amount());
-        assertEquals(created, transaction.description().createdAt());
+        assertEquals(Amount.cny("400.00"), transaction.getDescription().amount());
+        assertEquals(created, transaction.getDescription().createdAt());
     }
 
     @Test
@@ -200,10 +200,10 @@ public class ModelMapperTest {
         mapper.insertSourceEvidenceDescription(holder.id(), description);
 
         SalesSettlement evidence = (SalesSettlement) mapper.findSourceEvidenceByCustomerAndId(customerId, holder.id());
-        assertEquals(Amount.cny("1000.00"), evidence.description().getTotal());
+        assertEquals(Amount.cny("1000.00"), evidence.getDescription().getTotal());
 
-        assertEquals(1, evidence.description().getDetails().size());
-        SalesSettlementDescription.Detail detail = evidence.description().getDetails().get(0);
+        assertEquals(1, evidence.getDescription().getDetails().size());
+        SalesSettlementDescription.Detail detail = evidence.getDescription().getDetails().get(0);
         assertEquals(Amount.cny("1000.00"), detail.getAmount());
     }
 
@@ -212,6 +212,11 @@ public class ModelMapperTest {
         mapper.updateAccount(customerId, accountId, new Account.AccountChange(Amount.cny("100.00")));
 
         Account account = mapper.findCustomerById(customerId).accounts().findByIdentity(accountId).get();
-        assertEquals(Amount.cny("200.00"), account.description().current());
+        assertEquals(Amount.cny("200.00"), account.getDescription().current());
+    }
+
+    @Test
+    public void should_count_transaction_in_accounts() {
+        assertEquals(1, mapper.countTransactionsInAccount(accountId));
     }
 }

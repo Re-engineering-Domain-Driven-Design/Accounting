@@ -41,6 +41,6 @@ public class EntityList<Id, E extends Entity<Id, ?>> implements Many<E>, HasMany
 
     @Override
     public Optional<E> findByIdentity(Id identifier) {
-        return stream().filter(it -> it.identity().equals(identifier)).findFirst();
+        return stream().filter(it -> it.getIdentity().equals(identifier)).findFirst();
     }
 }

@@ -14,11 +14,11 @@
         <association property="accounts" resultMap="accounts"/>
     </resultMap>
 
-    <resultMap id="sourceEvidences" type="reengineering.ddd.accounting.mybatis.model.CustomerSourceEvidences">
+    <resultMap id="sourceEvidences" type="reengineering.ddd.accounting.mybatis.associations.CustomerSourceEvidences">
         <result column="id" property="customerId" javaType="String"/>
     </resultMap>
 
-    <resultMap id="accounts" type="reengineering.ddd.accounting.mybatis.model.CustomerAccounts">
+    <resultMap id="accounts" type="reengineering.ddd.accounting.mybatis.associations.CustomerAccounts">
         <result column="id" property="customerId" javaType="String"/>
         <collection property="list" resultMap="account" ofType="reengineering.ddd.accounting.model.Account"/>
     </resultMap>
@@ -31,7 +31,7 @@
 
     <resultMap id="salesSettlement" type="reengineering.ddd.accounting.model.SalesSettlement">
         <id property="identity" column="id" jdbcType="BIGINT" javaType="String"/>
-        <association property="description" column="id" select="loadSalesSettlement"/>
+        <association property="description" column="id" select="loadSalesSettlement" fetchType="lazy"/>
         <association property="transactions" resultMap="sourceEvidenceTransactions"/>
     </resultMap>
 
@@ -46,22 +46,24 @@
         </association>
     </resultMap>
 
-    <resultMap id="accountTransactions" type="reengineering.ddd.accounting.mybatis.model.AccountTransactions">
+    <resultMap id="accountTransactions" type="reengineering.ddd.accounting.mybatis.associations.AccountTransactions">
         <result column="account_id" property="accountId" javaType="String"/>
     </resultMap>
 
     <resultMap id="sourceEvidenceTransactions"
-               type="reengineering.ddd.accounting.mybatis.model.SourceEvidenceTransactions">
+               type="reengineering.ddd.accounting.mybatis.associations.SourceEvidenceTransactions">
         <result column="id" property="sourceEvidenceId" javaType="String"/>
     </resultMap>
 
 
-    <select id="loadSalesSettlement" resultMap="description.salesSettlement">
+    <select id="loadSalesSettlement"
+            resultMap="description.salesSettlement" parameterType="int">
         select s.id             as source_evidence_id,
                s.order_id       as order_id,
                s.account_id     as account_id,
                s.total_amount   as total_amount,
                s.total_currency as total_currecny,
+               d.id             as detail_id,
                d.amount         as detail_amount,
                d.currency       as detail_currency,
         from sales_settlements s

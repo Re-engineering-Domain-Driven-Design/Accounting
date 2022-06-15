@@ -33,7 +33,7 @@ public class CustomerAccountTransactionsApiTest extends ApiTest {
     @BeforeEach
     public void before() {
         customer = new Customer("john.smith", new CustomerDescription("John Smith", "john.smith@email.com"), mock(Customer.SourceEvidences.class), accounts);
-        when(customers.findById(eq(customer.identity()))).thenReturn(Optional.of(customer));
+        when(customers.findById(eq(customer.getIdentity()))).thenReturn(Optional.of(customer));
     }
 
     @Test
@@ -41,7 +41,7 @@ public class CustomerAccountTransactionsApiTest extends ApiTest {
         when(accounts.findByIdentity(eq("CASH-01"))).thenReturn(Optional.empty());
 
         given().accept(MediaTypes.HAL_JSON.toString())
-                .when().get("/customers/" + customer.identity() + "/accounts/CASH-01/transactions")
+                .when().get("/customers/" + customer.getIdentity() + "/accounts/CASH-01/transactions")
                 .then().statusCode(404);
     }
 
@@ -53,7 +53,7 @@ public class CustomerAccountTransactionsApiTest extends ApiTest {
         when(accounts.findByIdentity(eq("CASH-01"))).thenReturn(Optional.of(account));
 
         SourceEvidence evidence = mock(SourceEvidence.class);
-        when(evidence.identity()).thenReturn("EV-001");
+        when(evidence.getIdentity()).thenReturn("EV-001");
 
         Transaction transaction = new Transaction("TX-01", new TransactionDescription(Amount.cny("1000"), LocalDateTime.now()), () -> account,
                 () -> evidence);
@@ -61,13 +61,13 @@ public class CustomerAccountTransactionsApiTest extends ApiTest {
         when(transactions.findAll()).thenReturn(new EntityList<>(transaction));
 
         given().accept(MediaTypes.HAL_JSON.toString())
-                .when().get("/customers/" + customer.identity() + "/accounts/CASH-01/transactions")
+                .when().get("/customers/" + customer.getIdentity() + "/accounts/CASH-01/transactions")
                 .then().statusCode(200)
-                .body("_links.self.href", is("/api/customers/" + customer.identity() + "/accounts/CASH-01/transactions"))
+                .body("_links.self.href", is("/api/customers/" + customer.getIdentity() + "/accounts/CASH-01/transactions"))
                 .body("_embedded.transactions.size()", is(1))
-                .body("_embedded.transactions[0].id", is(transaction.identity()))
-                .body("_embedded.transactions[0].amount.value", is(transaction.description().amount().value().intValue()))
-                .body("_embedded.transactions[0].amount.currency", is(transaction.description().amount().currency().toString()))
-                .body("_embedded.transactions[0]._links.source-evidence.href", is("/api/customers/" + customer.identity() + "/source-evidences/EV-001"));
+                .body("_embedded.transactions[0].id", is(transaction.getIdentity()))
+                .body("_embedded.transactions[0].amount.value", is(transaction.getDescription().amount().value().intValue()))
+                .body("_embedded.transactions[0].amount.currency", is(transaction.getDescription().amount().currency().toString()))
+                .body("_embedded.transactions[0]._links.source-evidence.href", is("/api/customers/" + customer.getIdentity() + "/source-evidences/EV-001"));
     }
 }

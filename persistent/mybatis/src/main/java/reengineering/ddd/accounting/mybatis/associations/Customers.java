@@ -1,4 +1,4 @@
-package reengineering.ddd.accounting.mybatis.model;
+package reengineering.ddd.accounting.mybatis.associations;
 
 import org.springframework.stereotype.Component;
 import reengineering.ddd.accounting.model.Customer;
@@ -19,6 +19,6 @@ public class Customers implements reengineering.ddd.accounting.model.Customers {
 
     @Override
     public Optional<Customer> findById(String id) {
-        return Optional.of(mapper.findCustomerById(id));
+        return Optional.ofNullable(mapper.findCustomerById(id));
     }
 }

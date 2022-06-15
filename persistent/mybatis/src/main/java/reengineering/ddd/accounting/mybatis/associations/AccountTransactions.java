@@ -1,4 +1,4 @@
-package reengineering.ddd.accounting.mybatis.model;
+package reengineering.ddd.accounting.mybatis.associations;
 
 import reengineering.ddd.accounting.description.TransactionDescription;
 import reengineering.ddd.accounting.model.Account;
@@ -40,7 +40,7 @@ public class AccountTransactions extends EntityList<String, Transaction> impleme
     @Override
     public Transaction add(Account account, SourceEvidence<?> evidence, TransactionDescription description) {
         IdHolder holder = new IdHolder();
-        mapper.insertTransaction(holder, account.identity(), evidence.identity(), description);
+        mapper.insertTransaction(holder, account.getIdentity(), evidence.getIdentity(), description);
         return mapper.findTransactionByAccountAndId(accountId, holder.id());
     }
 }

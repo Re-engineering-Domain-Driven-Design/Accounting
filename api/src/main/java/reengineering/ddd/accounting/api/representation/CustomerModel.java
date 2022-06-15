@@ -17,8 +17,8 @@ public class CustomerModel extends RepresentationModel<CustomerModel> {
     private CustomerDescription description;
 
     public CustomerModel(Customer customer, UriInfo info) {
-        this.id = customer.identity();
-        this.description = customer.description();
-        add(Link.of(ApiTemplates.customer(info).build(customer.identity()).getPath(), "self"));
+        this.id = customer.getIdentity();
+        this.description = customer.getDescription();
+        add(Link.of(ApiTemplates.customer(info).build(customer.getIdentity()).getPath(), "self"));
     }
 }

@@ -1,4 +1,4 @@
-package reengineering.ddd.accounting.mybatis.model;
+package reengineering.ddd.accounting.mybatis.associations;
 
 import reengineering.ddd.accounting.model.SourceEvidence;
 import reengineering.ddd.accounting.model.Transaction;

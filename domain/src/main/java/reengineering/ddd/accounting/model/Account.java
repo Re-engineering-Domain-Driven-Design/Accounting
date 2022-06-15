@@ -7,7 +7,6 @@ import reengineering.ddd.archtype.Entity;
 import reengineering.ddd.archtype.HasMany;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 public class Account implements Entity<String, AccountDescription> {
     private String identity;
@@ -25,12 +24,12 @@ public class Account implements Entity<String, AccountDescription> {
     }
 
     @Override
-    public String identity() {
+    public String getIdentity() {
         return identity;
     }
 
     @Override
-    public AccountDescription description() {
+    public AccountDescription getDescription() {
         return description;
     }
 
@@ -40,7 +39,7 @@ public class Account implements Entity<String, AccountDescription> {
 
     public AccountChange add(SourceEvidence<?> evidence, List<TransactionDescription> descriptions) {
         Amount changeTotal = Amount.sum(descriptions.stream().map(it -> transactions.add(this, evidence, it))
-                .map(it -> it.description().amount()).toArray(Amount[]::new));
+                .map(it -> it.getDescription().amount()).toArray(Amount[]::new));
         description = new AccountDescription(Amount.sum(description.current(), changeTotal));
         return new AccountChange(changeTotal);
     }

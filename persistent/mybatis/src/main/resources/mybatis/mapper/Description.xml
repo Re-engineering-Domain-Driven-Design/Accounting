@@ -30,14 +30,18 @@
 
     <resultMap id="salesSettlement"
                type="reengineering.ddd.accounting.description.SalesSettlementDescription">
+        <id column="source_evidence_id"/>
         <association property="order" resultMap="ref" columnPrefix="order_"/>
         <association property="account" resultMap="ref" columnPrefix="account_"/>
         <association property="total" resultMap="amount" columnPrefix="total_"/>
-        <collection property="details" resultMap="salesSettlementDetails" columnPrefix="detail_"/>
+        <collection property="details"
+                    column="source_evidence_id"
+                    resultMap="salesSettlementDetails" columnPrefix="detail_"/>
     </resultMap>
 
     <resultMap id="salesSettlementDetails"
                type="reengineering.ddd.accounting.description.SalesSettlementDescription$Detail">
+        <id column="id"/>
         <association property="amount" resultMap="amount"/>
     </resultMap>
 

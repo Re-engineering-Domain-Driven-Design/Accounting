@@ -24,12 +24,12 @@ public class SalesSettlement implements SourceEvidence<SalesSettlementDescriptio
     }
 
     @Override
-    public String identity() {
+    public String getIdentity() {
         return identity;
     }
 
     @Override
-    public SalesSettlementDescription description() {
+    public SalesSettlementDescription getDescription() {
         return description;
     }
 

@@ -28,10 +28,10 @@ public class SourceEvidenceModel extends RepresentationModel<SourceEvidenceModel
     private List<TransactionModel> transactions;
 
     private SourceEvidenceModel(Customer customer, SourceEvidence<?> evidence, SourceEvidenceDescription description, List<TransactionModel> transactions, UriInfo info) {
-        this.id = evidence.identity();
+        this.id = evidence.getIdentity();
         this.description = description;
         this.transactions = transactions;
-        add(Link.of(ApiTemplates.sourceEvidence(info).build(customer.identity(), evidence.identity()).getPath(), "self"));
+        add(Link.of(ApiTemplates.sourceEvidence(info).build(customer.getIdentity(), evidence.getIdentity()).getPath(), "self"));
 
     }
 
@@ -40,7 +40,7 @@ public class SourceEvidenceModel extends RepresentationModel<SourceEvidenceModel
     }
 
     public static SourceEvidenceModel of(Customer customer, SourceEvidence<?> evidence, UriInfo info) {
-        return new SourceEvidenceModel(customer, evidence, evidence.description(), evidence.transactions().findAll().stream().map(tx ->
+        return new SourceEvidenceModel(customer, evidence, evidence.getDescription(), evidence.transactions().findAll().stream().map(tx ->
                 new TransactionModel(customer, tx, info)).collect(Collectors.toList()), info);
     }
 }

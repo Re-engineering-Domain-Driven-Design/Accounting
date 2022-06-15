@@ -37,13 +37,13 @@ public class SourceEvidencesApi {
         return CollectionModel.of(customer.sourceEvidences().findAll().stream()
                         .map(evidence ->
                                 SourceEvidenceModel.simple(customer, evidence, info)).collect(Collectors.toList()),
-                Link.of(ApiTemplates.sourceEvidences(info).build(customer.identity()).getPath(), "self"));
+                Link.of(ApiTemplates.sourceEvidences(info).build(customer.getIdentity()).getPath(), "self"));
     }
 
     @POST
     public Response create(String json, @Context UriInfo info) {
         SourceEvidence evidence = customer.add(reader.read(json)
                 .orElseThrow(() -> new WebApplicationException(Response.Status.NOT_ACCEPTABLE)).description());
-        return Response.created(ApiTemplates.sourceEvidence(info).build(customer.identity(), evidence.identity())).build();
+        return Response.created(ApiTemplates.sourceEvidence(info).build(customer.getIdentity(), evidence.getIdentity())).build();
     }
 }

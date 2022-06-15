@@ -28,6 +28,6 @@ public class AccountsApi {
         Account account = customer.accounts().findByIdentity(id).orElseThrow(() -> new WebApplicationException(Response.Status.NOT_FOUND));
         return CollectionModel.of(account.transactions().findAll().stream().map(tx -> TransactionModel.withEvidenceLink(customer, tx, info))
                         .collect(Collectors.toList()),
-                Link.of(ApiTemplates.accountTransactions(info).build(customer.identity(), account.identity()).getPath(), "self"));
+                Link.of(ApiTemplates.accountTransactions(info).build(customer.getIdentity(), account.getIdentity()).getPath(), "self"));
     }
 }

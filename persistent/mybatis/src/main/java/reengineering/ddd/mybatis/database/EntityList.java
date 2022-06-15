@@ -11,12 +11,12 @@ import java.util.Optional;
 public abstract class EntityList<Id, E extends Entity<Id, ?>> implements Many<E>, HasMany<Id, E> {
     @Override
     public final Many<E> findAll() {
-        return new reengineering.ddd.mybatis.memory.EntityList<>(findAllEntities());
+        return this;
     }
 
     @Override
     public final Optional<E> findByIdentity(Id identifier) {
-        return Optional.of(findEntity(identifier));
+        return Optional.ofNullable(findEntity(identifier));
     }
 
     @Override
@@ -26,7 +26,7 @@ public abstract class EntityList<Id, E extends Entity<Id, ?>> implements Many<E>
 
     @Override
     public final Iterator<E> iterator() {
-        return findAll().iterator();
+        return findAllEntities().iterator();
     }
 
     protected abstract List<E> findAllEntities();

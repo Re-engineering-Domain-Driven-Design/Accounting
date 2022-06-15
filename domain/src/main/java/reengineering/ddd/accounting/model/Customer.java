@@ -28,11 +28,11 @@ public class Customer implements Entity<String, CustomerDescription> {
     private Customer() {
     }
 
-    public String identity() {
+    public String getIdentity() {
         return identity;
     }
 
-    public CustomerDescription description() {
+    public CustomerDescription getDescription() {
         return description;
     }
 

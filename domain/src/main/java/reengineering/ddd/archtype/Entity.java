@@ -1,7 +1,7 @@
 package reengineering.ddd.archtype;
 
 public interface Entity<Identity, Description> {
-    Identity identity();
+    Identity getIdentity();
 
-    Description description();
+    Description getDescription();
 }
