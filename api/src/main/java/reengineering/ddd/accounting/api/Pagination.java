@@ -27,7 +27,7 @@ public class Pagination<E extends Entity<?, ?>> {
         this.pageSize = pageSize;
     }
 
-    public <M> CollectionModel<M> page(int page, Function<E, M> toModel, Function<Integer, URI> toUri) throws MalformedURLException {
+    public <M> CollectionModel<M> page(int page, Function<E, M> toModel, Function<Integer, URI> toUri) {
         if (!withInRange(page)) throw new WebApplicationException(Response.Status.NOT_FOUND);
 
         PagedModel.PageMetadata metadata = new PagedModel.PageMetadata(pageSize, page, total);

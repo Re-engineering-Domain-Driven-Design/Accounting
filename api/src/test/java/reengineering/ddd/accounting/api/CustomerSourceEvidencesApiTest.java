@@ -15,6 +15,7 @@ import reengineering.ddd.accounting.description.basic.Amount;
 import reengineering.ddd.accounting.description.basic.Currency;
 import reengineering.ddd.accounting.model.*;
 import reengineering.ddd.archtype.HasMany;
+import reengineering.ddd.archtype.Many;
 
 import javax.ws.rs.core.HttpHeaders;
 import java.math.BigDecimal;
@@ -38,28 +39,62 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
     @MockBean
     private SourceEvidenceReader reader;
 
+    @Mock
+    private SourceEvidence<EvidenceDescription> evidence;
+
+    @Mock
+    private Many<SourceEvidence<?>> evidences;
+
+    @Mock
+    private HasMany<String, Transaction> transactions;
+
+    @Mock
+    private Account.Transactions accountTransactions;
+
     @BeforeEach
     public void before() {
         customer = new Customer("john.smith", new CustomerDescription("John Smith", "john.smith@email.com"), sourceEvidences, mock(Customer.Accounts.class));
         when(customers.findById(eq(customer.getIdentity()))).thenReturn(Optional.of(customer));
+
+        when(evidence.getIdentity()).thenReturn("EV-001");
+        when(evidence.getDescription()).thenReturn(new EvidenceDescription("ORD-001"));
+        when(evidence.transactions()).thenReturn(transactions);
+
+        Account account = new Account("CASH-01", new AccountDescription(new Amount(new BigDecimal("0"), Currency.CNY)), accountTransactions);
+        when(transactions.findAll()).thenReturn(new EntityList<>(new Transaction("TX-01", new TransactionDescription(Amount.cny("1000"), LocalDateTime.now()), () -> account, () -> evidence)));
     }
 
     @Test
     public void should_return_all_source_evidences_with_only_links() {
-        SourceEvidence evidence = mock(SourceEvidence.class);
-        when(evidence.getIdentity()).thenReturn("EV-001");
-        when(evidence.getDescription()).thenThrow(new NullPointerException());
-
-        when(sourceEvidences.findAll()).thenReturn(new EntityList<>(evidence));
+        when(sourceEvidences.findAll()).thenReturn(evidences);
+        when(evidences.size()).thenReturn(1);
+        when(evidences.subCollection(eq(0), eq(1))).thenReturn(new EntityList<>(evidence));
 
         given().accept(MediaTypes.HAL_JSON.toString())
                 .when().get("/customers/" + customer.getIdentity() + "/source-evidences")
                 .then().statusCode(200)
-                .body("_links.self.href", is("/api/customers/" + customer.getIdentity() + "/source-evidences"))
+                .body("_links.self.href", is("/api/customers/" + customer.getIdentity() + "/source-evidences?page=0"))
                 .body("_embedded.evidences.size()", is(1))
                 .body("_embedded.evidences[0].id", is("EV-001"))
                 .body("_embedded.evidences[0]._links.self.href", is("/api/customers/" + customer.getIdentity() + "/source-evidences/EV-001"));
     }
+
+    @Test
+    public void should_return_all_source_evidences_as_pages() {
+        when(sourceEvidences.findAll()).thenReturn(evidences);
+        when(evidences.size()).thenReturn(4000);
+        when(evidences.subCollection(eq(0), eq(40))).thenReturn(new EntityList<>(evidence));
+
+        given().accept(MediaTypes.HAL_JSON.toString())
+                .when().get("/customers/" + customer.getIdentity() + "/source-evidences")
+                .then().statusCode(200)
+                .body("_links.self.href", is("/api/customers/" + customer.getIdentity() + "/source-evidences?page=0"))
+                .body("_links.next.href", is("/api/customers/" + customer.getIdentity() + "/source-evidences?page=1"))
+                .body("_embedded.evidences.size()", is(1))
+                .body("_embedded.evidences[0].id", is("EV-001"))
+                .body("_embedded.evidences[0]._links.self.href", is("/api/customers/" + customer.getIdentity() + "/source-evidences/EV-001"));
+    }
+
 
     @Test
     public void should_return_404_if_no_source_evidence_matched_by_id() {
@@ -72,20 +107,6 @@ public class CustomerSourceEvidencesApiTest extends ApiTest {
 
     @Test
     public void should_return_source_evidence_matched_by_id() {
-        SourceEvidence evidence = mock(SourceEvidence.class);
-        HasMany<String,Transaction> transactions = mock(HasMany.class);
-
-        when(evidence.getIdentity()).thenReturn("EV-001");
-        when(evidence.getDescription()).thenReturn(new EvidenceDescription("ORD-001"));
-        when(evidence.transactions()).thenReturn(transactions);
-
-        Account.Transactions accountTransactions = mock(Account.Transactions.class);
-        Account account = new Account("CASH-01", new AccountDescription(new Amount(new BigDecimal("0"), Currency.CNY)), accountTransactions);
-        Transaction transaction = new Transaction("TX-01", new TransactionDescription(Amount.cny("1000"), LocalDateTime.now()), () -> account,
-                () -> evidence);
-
-        when(transactions.findAll()).thenReturn(new EntityList<>(transaction));
-
         when(sourceEvidences.findByIdentity("EV-001")).thenReturn(Optional.of(evidence));
 
         given().accept(MediaTypes.HAL_JSON.toString())

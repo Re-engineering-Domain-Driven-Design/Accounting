@@ -29,7 +29,7 @@ public class AccountsApi {
 
     @GET
     @Path("{account-id}/transactions")
-    public CollectionModel<TransactionModel> findAll(@PathParam("account-id") String id, @Context UriInfo info, @DefaultValue("0") @QueryParam("page") int page) throws MalformedURLException {
+    public CollectionModel<TransactionModel> findAll(@PathParam("account-id") String id, @Context UriInfo info, @DefaultValue("0") @QueryParam("page") int page) {
         Account account = customer.accounts().findByIdentity(id).orElseThrow(() -> new WebApplicationException(Response.Status.NOT_FOUND));
         return new Pagination<>(account.transactions().findAll(), 40).page(page,
                 tx -> TransactionModel.withEvidenceLink(customer, tx, info),

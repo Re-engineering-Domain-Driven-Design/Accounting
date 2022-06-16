@@ -4,8 +4,11 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import reengineering.ddd.accounting.api.representation.SourceEvidenceModel;
 import reengineering.ddd.accounting.api.representation.SourceEvidenceReader;
+import reengineering.ddd.accounting.api.representation.TransactionModel;
+import reengineering.ddd.accounting.model.Account;
 import reengineering.ddd.accounting.model.Customer;
 import reengineering.ddd.accounting.model.SourceEvidence;
+import reengineering.ddd.archtype.Many;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -13,6 +16,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.stream.Collectors;
+
+import static reengineering.ddd.accounting.api.ApiTemplates.accountTransactions;
+import static reengineering.ddd.accounting.api.ApiTemplates.sourceEvidences;
 
 public class SourceEvidencesApi {
     private Customer customer;
@@ -33,11 +39,10 @@ public class SourceEvidencesApi {
     }
 
     @GET
-    public CollectionModel<SourceEvidenceModel> findAll(@Context UriInfo info) {
-        return CollectionModel.of(customer.sourceEvidences().findAll().stream()
-                        .map(evidence ->
-                                SourceEvidenceModel.simple(customer, evidence, info)).collect(Collectors.toList()),
-                Link.of(ApiTemplates.sourceEvidences(info).build(customer.getIdentity()).getPath(), "self"));
+    public CollectionModel<SourceEvidenceModel> findAll(@Context UriInfo info, @DefaultValue("0") @QueryParam("page") int page) {
+        return new Pagination<>(customer.sourceEvidences().findAll(), 40).page(page,
+                evidence -> SourceEvidenceModel.simple(customer, evidence, info),
+                p -> sourceEvidences(info).queryParam("page", p).build(customer.getIdentity()));
     }
 
     @POST
