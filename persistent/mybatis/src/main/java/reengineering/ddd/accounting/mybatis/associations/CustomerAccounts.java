@@ -5,7 +5,11 @@ import reengineering.ddd.accounting.model.Customer;
 import reengineering.ddd.accounting.mybatis.ModelMapper;
 import reengineering.ddd.mybatis.memory.EntityList;
 
+import javax.inject.Inject;
+
 public class CustomerAccounts extends EntityList<String, Account> implements Customer.Accounts {
+
+    @Inject
     private ModelMapper mapper;
 
     private String customerId;

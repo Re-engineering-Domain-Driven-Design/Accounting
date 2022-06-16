@@ -2,8 +2,8 @@ package reengineering.ddd.accounting;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
-import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.context.annotation.Import;
 import reengineering.ddd.accounting.description.basic.Amount;
 import reengineering.ddd.accounting.model.*;
@@ -11,26 +11,19 @@ import reengineering.ddd.accounting.mybatis.associations.Customers;
 import reengineering.ddd.archtype.Many;
 
 import javax.inject.Inject;
-import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Optional;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MybatisTest
 @Import(FlywayConfig.class)
+@ExtendWith(TestDataSetup.class)
 public class AssociationsTest {
 
     @Inject
     private Customers customers;
-
-    @Inject
-    private TestDataMapper testData;
-
-    @Inject
-    private FlywayMigrationStrategy strategy;
 
     private String customerId = "1";
     private String accountId = "1";
@@ -39,22 +32,6 @@ public class AssociationsTest {
 
     @BeforeEach
     public void setup() {
-        testData.insertCustomer(customerId, "John Smith", "john.smith@email.com");
-        testData.insertAccount(accountId, customerId, 100.00, "CNY");
-        for (var evidence = 0; evidence < 1000; evidence++) {
-            String evidenceId = String.valueOf(evidence);
-            testData.insertSourceEvidence(evidenceId, customerId, "sales-settlement");
-
-            int num = 5;
-
-            testData.insertSalesSettlement(evidenceId, "ORD-" + new Random().nextInt(),
-                    accountId, 100 * num, "CNY");
-
-            for (var i = 0; i < num; i++) {
-                testData.insertSalesSettlementDetail(String.valueOf(100 * evidence + i), evidenceId, 100.00, "CNY");
-                testData.insertTransaction(String.valueOf(100 * evidence + i), accountId, evidenceId, 100.00, "CNY", LocalDateTime.now());
-            }
-        }
         customer = customers.findById(customerId).get();
     }
 
@@ -95,7 +72,8 @@ public class AssociationsTest {
     @Test
     public void should_find_transaction_from_account() {
         Account account = customer.accounts().findByIdentity(accountId).get();
-        Transaction transaction = account.transactions().findByIdentity("1").get();
+        String transactionId = account.transactions().findAll().iterator().next().getIdentity();
+        Transaction transaction = account.transactions().findByIdentity(transactionId).get();
 
         assertEquals(Amount.cny("100.00"), transaction.getDescription().amount());
         SalesSettlement evidence = (SalesSettlement) transaction.sourceEvidence();
@@ -143,9 +121,11 @@ public class AssociationsTest {
 
     @Test
     public void should_find_source_evidence_of_customer() {
-        SourceEvidence<?> sourceEvidence = customer.sourceEvidences().findByIdentity("0").get();
+        String identity = customer.sourceEvidences().findAll().iterator().next().getIdentity();
+        SourceEvidence<?> sourceEvidence = customer.sourceEvidences().findByIdentity(identity).get();
 
         assertEquals(5, sourceEvidence.transactions().findAll().size());
+        assertEquals(3, sourceEvidence.transactions().findAll().subCollection(0, 3).size());
     }
 
     @Test
