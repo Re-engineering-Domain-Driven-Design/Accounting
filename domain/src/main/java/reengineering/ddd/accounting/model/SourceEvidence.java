@@ -10,8 +10,8 @@ import java.util.Map;
 
 public interface SourceEvidence<Description extends SourceEvidenceDescription> extends Entity<String, Description> {
 
-//    interface Transactions extends HasMany<String, Transaction> {
-//    }
+    interface Transactions extends HasMany<String, Transaction> {
+    }
 
     HasMany<String, Transaction> transactions();
 

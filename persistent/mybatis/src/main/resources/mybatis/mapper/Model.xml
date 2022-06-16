@@ -39,7 +39,7 @@
         <id property="identity" column="id" jdbcType="BIGINT" javaType="String"/>
         <association property="description" resultMap="description.transaction"/>
         <association property="sourceEvidence" javaType="reengineering.ddd.mybatis.memory.Reference">
-            <association property="entity" resultMap="sourceEvidence" />
+            <association property="entity" resultMap="sourceEvidence"/>
         </association>
         <association property="account" javaType="reengineering.ddd.mybatis.memory.Reference">
             <association property="entity" resultMap="account"/>
@@ -50,8 +50,7 @@
         <result column="account_id" property="accountId" javaType="String"/>
     </resultMap>
 
-    <resultMap id="sourceEvidenceTransactions"
-               type="reengineering.ddd.mybatis.memory.EntityList">
+    <resultMap id="sourceEvidenceTransactions" type="reengineering.ddd.accounting.mybatis.associations.SourceEvidenceTransactions">
         <id column="evidence_id"/>
         <collection property="list" resultMap="transaction"/>
     </resultMap>
