@@ -9,13 +9,6 @@ public class SalesSettlementRequest implements SourceEvidenceRequest<SalesSettle
     @JsonUnwrapped
     private SalesSettlementDescription description;
 
-    private SalesSettlementRequest() {
-    }
-
-    public SalesSettlementRequest(SalesSettlementDescription description) {
-        this.description = description;
-    }
-
     @Override
     public SalesSettlementDescription description() {
         return description;
