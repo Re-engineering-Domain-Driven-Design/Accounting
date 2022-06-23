@@ -17,7 +17,7 @@
 
 ![关联](public/association.jpg?raw=true "关联")
 
-关联对象用接口表示。处于我个人的口味，我使用了内部接口。具体的代码在domain模块中：
+关联对象用接口表示。出于我个人的口味，我使用了内部接口。具体的代码在domain模块中：
 
 ```java
 public class Customer implements Entity<String, CustomerDescription> {
